@@ -29,7 +29,12 @@ rentals.controller('rentalsCtrl',  function($scope, $http){
  $scope.warning_message = "";
  $scope.conditions_of_stay = false;
  $scope.privacy_policy = false;
+ $is_wholesaler = false;
  $scope.sending_notifications = false;
+ $scope.people_count = '1';
+ $scope.phone = '';
+ $scope.email = '';
+ $scope.fio = '';
 class House{
 		data = [];	
 		choose = false;
@@ -51,6 +56,14 @@ class House{
 			} 
 			this.update()
 		}
+
+		choose_house(){
+			this.date = [ $scope.house_start.getFullYear() + '-' + ($scope.house_start.getMonth() + 1) + '-' + $scope.house_start.getDate(),
+				$scope.house_end.getFullYear() + '-' + ($scope.house_end.getMonth() +1 ) + '-' + $scope.house_end.getDate()];
+			this.choose = true;
+			this.update();
+		}
+
 		check_full(){
 			return this.full;
 		}
@@ -109,6 +122,7 @@ class House{
 		time_end_vals = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
 		time_start = "0";
 		time_end = "1";
+		start_date_2 = "";
 		choosen_id = '0';
 		start_date = new Date();
 		min_date = new Date();
@@ -213,6 +227,7 @@ class House{
 			this.full = false;
 			this.choosen_id = '0';
 			let date_from = formatDate(this.start_date);
+			this.start_date_2 = date_from;
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
@@ -241,6 +256,7 @@ class House{
 		time_start = "0";
 		title = "Аренда овец";
 		price = 0;
+		start_date_2 = "";
 		sale = 0;
 		time_type_restrict = -1;
 		time_end = "1";
@@ -342,6 +358,7 @@ class House{
 			this.full = false;
 			this.choosen_id = '0';
 			let date_from = formatDate(this.start_date);
+			this.start_date_2 = date_from;
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
@@ -365,6 +382,7 @@ class House{
 		elem = [];
 		start_date = new Date();
 		min_date = new Date();
+		start_date_2 = "";
 		choosen_field_id = '0';
 		choosen_trainer_id = '0';
 		buttons=true;
@@ -441,6 +459,7 @@ class House{
 			this.full = false;
 			this.choosen_id = '0';
 			let date_from = formatDate(this.start_date);
+			this.start_date_2 = date_from;
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from).then(
 				function success(result) {
@@ -461,6 +480,7 @@ class House{
 		time_type = '0';
 		start_date = new Date();
 		min_date = new Date();
+		start_date_2 = "";
 		sale = 0;
 		buttons=true;
 		constructor(buttons=true){
@@ -502,6 +522,7 @@ class House{
 
 		get_user_date(){
 			let date = formatDate(this.start_date);
+			this.start_date_2 = date;
 			date = date.split('-');
 			date = date.reverse().join('.');
 			
@@ -625,7 +646,13 @@ class House{
 			return houses;
 		}
 
-		chekcout(){
+		checkout(){
+			if($scope.fio == '' || $scope.email == '' || $scope.phone == ''){
+				$scope.warning_message = 'Введите контактные данные';
+				$scope.show_warning_message();
+				return false;
+			}
+
 			if(!this.check_full()){
 				return false;
 			}
@@ -645,12 +672,28 @@ class House{
 	 			houses_people_sum += parseInt(this.get_houses()[i].data.place_count);
 	 		}
 
-	 		if($scope.people_count > houses_people_sum){
+	 		if($scope.people_count > houses_people_sum && houses_people_sum != 0){
 	 			$scope.warning_message = "Количество мест в домах не рассчитано на количество постояльцев, которое вы указали";
 	 			document.getElementById('people-counter').scrollIntoView();
 	 			$scope.show_warning_message();
 	 			return false;
 	 		}
+	 		let user = {'name': $scope.fio, 'email': $scope.email, 'phone': $scope.phone, 'is_wholesaler': $scope.whole_saler * 1,
+	 		 'sending_notifications': $scope.sending_notifications * 1, 'person_count': $scope.people_count};
+	 		 console.log('cart='+JSON.stringify(this.items));
+	 		 console.log('&user='+JSON.stringify(user));
+	 		/*$http({
+			    url: '../api/payment.php',
+			    method: "POST",
+			    data: 'cart='+JSON.stringify(this.items)+'&user='+JSON.stringify(user),
+			        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+
+			    
+			    }).then(function success(result) {
+			    	console.log(result);
+			    });*/
+
+
 		}
 
 		check_date()
@@ -737,8 +780,15 @@ class House{
 	$scope.class = [];
 	$scope.camp = [];
 	$scope.houses = [];
+	$scope.whole_saler_privicy = false;
 	
 
+	$scope.rent_all = function() {
+		$scope.whole_saler = true;
+		for (var i = $scope.houses.length - 1; i >= 0; i--) {
+			$scope.houses[i].choose_house();
+		}
+	};
 
 
 	$scope.update = function(){	
@@ -852,6 +902,10 @@ class House{
 			document.getElementById('warning-message').classList.remove('d-none');
 		}
 
+		$scope.show_success_message = function(){
+			document.getElementById('success-message').classList.remove('d-none');
+		}
+
 
 		function formatDate(date) {
 			var d = new Date(date),
@@ -888,7 +942,45 @@ class House{
 			}
 		}
 
+		$scope.cancel_wholesaler = function() {
+			document.getElementById('wholesaller-message').classList.add('d-none');
+			document.querySelector(".offer-modal").classList.add("d-none")
+			$scope.whole_saler = false;
+		}
+
+		$scope.whole_saler_preview = function() {
+			document.getElementById('wholesaller-message').classList.remove('d-none');
+
+		}
+
+		$scope.continue_wholesaller = function() {
+			if($scope.whole_saler_privicy){
+				document.getElementById('wholesaller-message').classList.add('d-none');
+				$scope.open_cart();
+			}
+		}
+
+		$scope.pre_open_cart = function(){
+			let elem = [];
+			let pre_sum = 0;
+			for (var i = 0; i < $scope.houses.length; i++) {
+				if ($scope.houses[i].choose){
+					elem.push($scope.houses[i]);
+					pre_sum += $scope.houses[i].price;
+				}
+			}
+			$scope.pre_sum = pre_sum;
+
+			if($scope.whole_saler || elem.length >= 6){
+				$scope.whole_saler = true;
+				$scope.whole_saler_preview();
+			}else{
+				$scope.open_cart();
+			}
+		}
+
 		$scope.open_cart = function() {
+
 			let elems = [];
 			console.log($scope.subscription);
 			if ($scope.sheeps){

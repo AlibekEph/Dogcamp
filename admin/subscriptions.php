@@ -5,7 +5,7 @@ proove_auth();
 if(isset($_GET['move'])){
 
 if($_GET['move'] == 'del'){
-  del_house($_GET['id']);
+  del_subscription($_GET['id']);
 }
 }
 include_once("header.php") ?>
@@ -24,7 +24,9 @@ include_once("header.php") ?>
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
+    <a href="add_subscription.php" class="ml-3 mb-3 btn btn-primary">
+      Добавить абонемент
+    </a>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -37,28 +39,24 @@ include_once("header.php") ?>
                   <thead>
                   <tr>
                     <th>Название</th>
-                    <th>Цена</th>
-                    <th>Описание</th>
-                    <th>Кемпинг</th>
-                    <th>Категория</th>
+                    <th>Тип</th>
+                    <th>Количество</th>
+                    <th>Скидка</th>
                     <th>Действия</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php 
-                    foreach (get_houses() as $house) {
+                    foreach (get_subscription() as $sub) {
                        ?>
                   <tr>
-                    <td><?=$house->title?></td>
-                    <td><?=$house->price?> РУБ</td>
-                    <td><?=$house->description?></td>
-                    <td><?=$house->camp_name?></td>
-                    <td><?=$house->class_name?></td>
+                    <td><?=$sub['title']?></td>
+                    <td><?=$sub['service_title']?> <?=time_type_to_srt($sub['time_type'])?></td>
+                    <td><?=$sub['count']?></td>
+                    <td><?=$sub['sale']?></td>
                     <td>
                       <div class="row">
-                        <div class="col-4 text-center"><a href="index.php?move=del&id=<?=$house->id?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
-                        <div class="col-4 text-center"><a href="edit_item.php?id=<?=$house->id?>" class="btn"><i class="fas fa-edit"></i></a></div>
-                        <div class="col-4 text-center"><button class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><a href="subscriptions.php?move=del&id=<?=$sub['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
                       </div>
                     </td>
                   </tr>
@@ -108,9 +106,9 @@ include_once("header.php") ?>
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
-<scriptdist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<scriptdist/js/demo.js"></script>
+<script src="dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
   $(function () {

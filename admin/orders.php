@@ -1,7 +1,12 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
 proove_auth();
+if(isset($_GET['move'])){
 
+if($_GET['move'] == 'del'){
+  del_order($_GET['id']);
+}
+}
 
 include_once("header.php") ?>
 
@@ -31,29 +36,35 @@ include_once("header.php") ?>
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Описание</th>
-                    <th>Кемпинг</th>
-                    <th>Категория</th>
+                    <th>id Заказа</th>
+                    <th>ФИ заказчика</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Стоимость</th>
+                    <th>Количество человек</th>
+                    <th>Дата</th>
+                    <th>Оптовик</th>
                     <th>Действия</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php 
-                    foreach (get_orders() as $house) {
+                    foreach (get_orders() as $order) {
                        ?>
                   <tr>
-                    <td><?=$house->title?></td>
-                    <td><?=$house->price?> РУБ</td>
-                    <td><?=$house->description?></td>
-                    <td><?=$house->camp_name?></td>
-                    <td><?=$house->class_name?></td>
+                    <td><?=$order['id']?></td>
+                    <td><?=$order['surname']." ".$order['name']?></td>
+                    <td><?=$order['email']?></td>
+                    <td><?=$order['phone']?></td>
+                    <td><?=$order['coast']?></td>
+                    <td><?=$order['person_count']?></td>
+                    <td><?=$order['date']?></td>
+                    <td><?=$order['id']?></td> 
+                    <td><?=$order['is_wholesaler'] ? 'Да' : 'Нет'?></td>                   
                     <td>
                       <div class="row">
-                        <div class="col-4 text-center"><a href="index.php?move=del&id=<?=$house->id?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
-                        <div class="col-4 text-center"><a href="edit_item.php?id=<?=$house->id?>" class="btn"><i class="fas fa-edit"></i></a></div>
-                        <div class="col-4 text-center"><button class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><a href="orders?move=del&id=<?=$order['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
+                        <div class="col-4 text-center"><a href="order.php?id=<?=$order['id']?>" class="btn"><i class="fas fa-eye"></i></button></div>
                       </div>
                     </td>
                   </tr>

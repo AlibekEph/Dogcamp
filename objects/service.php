@@ -20,7 +20,7 @@ class Service{
 		}else{
 			$sql = "INSERT INTO `services` (`id`, `type`, `title`) VALUES (NULL, '".$type."', '".$title."')";
 			$this->db->query($sql);
-			$last_id = 'SELECT MAX(`id`) FROM `houses`';
+			$last_id = 'SELECT MAX(`id`) FROM `services`';
 			$last_id = $this->db->query($last_id);
 			$last_id = ( int ) mysqli_fetch_all($last_id, MYSQLI_ASSOC)[0]["MAX(`id`)"];
 			$this->id= $last_id;

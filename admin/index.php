@@ -58,7 +58,7 @@ include_once("header.php") ?>
                       <div class="row">
                         <div class="col-4 text-center"><a href="index.php?move=del&id=<?=$house->id?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
                         <div class="col-4 text-center"><a href="edit_item.php?id=<?=$house->id?>" class="btn"><i class="fas fa-edit"></i></a></div>
-                        <div class="col-4 text-center"><button class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><a href="house_desc.php?id=<?=$house->id?>" class="btn"><i class="fas fa-eye"></i></a></div>
                       </div>
                     </td>
                   </tr>

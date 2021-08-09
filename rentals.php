@@ -28,6 +28,12 @@ include_once("header.php") ?>
 	<div class="container w-container">
 		<div class="s2-rentals-wrap">
 			<h1 class="h1">Аренда</h1>
+			<div class="row">
+				<div class="col-12 text-center">
+					<p ng-click="rent_all()" class="mt-3 rent-all">Выбрать все</p>
+				</div>
+			</div>
+			
 			<div class="rentals-wrap">
 				<div class="sidebar">
 					<div class="w-form">
@@ -72,7 +78,7 @@ include_once("header.php") ?>
                      input-aria-labelledby="datepicker-header "></md-datepicker>
 							</div>
 							<div class="filter-box filter-date">
-								<button class="btn btn-main w-100" ng-click="open_cart()" id="take-offer" type="button">Перейти к заказу</button>
+								<button class="btn btn-main w-100" ng-click="pre_open_cart()" id="take-offer" type="button">Перейти к заказу</button>
 							</div>
 						</form>
 						<div class="w-form-done">
@@ -182,13 +188,13 @@ include_once("header.php") ?>
 					<h2 class="text-center">Оформление заказа</h2>
 				</div>
 				<div class="col-12 mt-3 mb-3">
-					<input type="text" placeholder="ФИО *" class="form-control">
+					<input type="text" placeholder="ФИ *" ng-model="fio" class="form-control">
 				</div>
 				<div class="col-12 mt-3 mb-3">
-					<input type="email" placeholder="Email *" class="form-control">
+					<input type="email" placeholder="Email *" ng-model="email" class="form-control">
 				</div>
 				<div class="col-12 mt-3 mb-3">
-					<input type="number" placeholder="Телефон *" class="form-control">
+					<input type="text" placeholder="Телефон *" ng-model="phone" class="form-control">
 				</div>
 				<div class="col-12 mt-3 mb-3">
 					<label for="">Количество человек *</label>
@@ -247,14 +253,14 @@ include_once("header.php") ?>
 				</div>
 
 				<div class="col-12 mt-4 mb-4">
-					<button ng-click="cart.chekcout()" class="w-100 btn">Оформить заказ</button>
+					<button ng-click="cart.checkout()" class="w-100 btn">Оформить заказ</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <div id="warning-message" class="modal-overlay house-info-modal d-none">
-	<div class="modal-popup">
+	<div class="modal-popup warning-popup">
 		<div class="modal-head">
 			<button class="btn close-popup" type="button">&times;</button>
 		</div>
@@ -267,6 +273,49 @@ include_once("header.php") ?>
 		</div>
 	</div>
 </div>
+
+<div id="success-message" class="modal-overlay house-info-modal d-none">
+	<div class="modal-popup warning-popup">
+		<div class="modal-head">
+			<button class="btn close-popup" type="button">&times;</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-12">
+					<h4 class="text-center">Поздравляем! В подарок Вы получили 2 домика!</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="wholesaller-message" class="modal-overlay house-info-modal d-none">
+	<div class="modal-popup warning-popup">
+		
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-12">
+					<h4 class="text-center">Вы собираетесь забронировать весь кемпинг — общая стоимость бронирования составляет {{pre_sum}} рублей. Такое бронирование происходит по предоплате в размере 5000 рублей. После оформления и внесения предоплаты, с вами свяжется менеджер. Внимание! Предоплата не подлежит возврату. Нажимая, вы соглашаетесь с этими условиями</h4>
+				</div>
+			</div>
+			<div class="col-12 mt-3 mb-3 text-center">
+					<label for="">Соглашен с условиями</label>
+					<input ng-model="whole_saler_privicy" type="checkbox" class="form-control">
+				</div>
+				<div class="col-12 mb-3 mt-3">
+					<div class="row">
+			<div class="col-6 mt-4 mb-4">
+					<button ng-click="cancel_wholesaler()" class="w-100 btn">Отмена</button>
+				</div>
+				<div class="col-6 mt-4 mb-4">
+					<button ng-click="continue_wholesaller()" class="w-100 btn">Продолжить</button>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 </div>
 <style type="text/css">
 	.md-datepicker-calendar-pane{
@@ -292,5 +341,22 @@ include_once("header.php") ?>
     color: #CB759F;
     transition: .3s;
 }
+
+.rent-all{
+	text-transform: uppercase;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.rent-all.rent-all-selected{
+	color: #cb759f;
+}
+
+.warning-popup{
+	width:450px;
+	max-width: 95%;
+	overflow-y: hidden;
+}
 </style>
+
 <?php include_once("footer.php") ?>

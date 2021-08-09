@@ -32,16 +32,19 @@
       </li>
 
       <li class="nav-item">
-        <a href="index.php" class="nav-link">Таблица аренды</a>
+        <a href="index.php" class="nav-link">Дома</a>
       </li>
 
       <li class="nav-item">
-        <a href="add_item.php" class="nav-link">Добавить объект</a>
+        <a href="add_item.php" class="nav-link">Добавить дом</a>
+      </li>
+       <li class="nav-item">
+        <a href="subscriptions.php" class="nav-link">Заказы</a>
+      </li>
+       <li class="nav-item">
+        <a href="orders.php" class="nav-link">Абонементы</a>
       </li>
 
-      <li class="nav-item">
-        <a href="#" class="nav-link">Выйти</a>
-      </li>
 
 
     </ul>
