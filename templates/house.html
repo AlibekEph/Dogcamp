@@ -1,0 +1,14 @@
+	<div class="col-12 mt-4 mb-4 text-center">
+					<h3>{{house.data.title}}</h3>
+				</div>
+				 <div ng-repeat="img in house.get_prev_photo()" class="col-md-4 col-lg-3 col-12 mt-2 mb-2">
+					<img src="sources/houses/{{house.data.id}}/{{img.name}}" alt="" loading="lazy">
+				</div>
+				
+				<div class="col-12 mt-4 mb-4 text-left">
+					<p class="mt-0 mb-0">Кол-во человек: {{house.data.place_count}}</p>
+				</div>
+				<div class="col-12 mt-4 mb-4 text-left">
+					<p class="mt-0 mb-0">Кол-во дней: с {{house.get_user_date()[0]}} до {{house.get_user_date()[1]}}</p>
+				</div>
+				<hr>

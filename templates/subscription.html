@@ -1,0 +1,11 @@
+<div class="col-12 mb-3 mt-3">
+					<h4>Абонимент</h4>
+				</div>
+				<d-service ng-repeat="cart_elem in cart_elem.items" attributes="{'class': cart_elem.class}" data="cart_elem">
+				</d-service>
+				<div class="col-12 mt-4 mb-4">
+					<button ng-click="copy_elem_from_cart(cart_elem)" class="w-100 btn">Дублировать абонемент</button>
+				</div>
+				<div class="col-12 mt-4 mb-4">
+					<button  ng-click="del_elem_form_cart(cart_elem)"  class="w-100 btn">Удалить абонемент</button>
+				</div>
