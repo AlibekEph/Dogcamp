@@ -63,7 +63,7 @@ include_once("header.php") ?>
                     <td><?=$order['is_wholesaler'] ? 'Да' : 'Нет'?></td>                   
                     <td>
                       <div class="row">
-                        <div class="col-4 text-center"><a href="orders?move=del&id=<?=$order['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
+                        <div class="col-4 text-center"><a href="orders.php?move=del&id=<?=$order['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
                         <div class="col-4 text-center"><a href="order.php?id=<?=$order['id']?>" class="btn"><i class="fas fa-eye"></i></button></div>
                       </div>
                     </td>

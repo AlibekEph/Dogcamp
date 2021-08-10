@@ -90,9 +90,9 @@ function get_orders(){
 }
 
 function del_order($id){
-global $db;
-$sql = "DELETE FROM orders WHERE id = '".$id."'";
-$db->query($sql);
+	global $db;
+	$sql = "DELETE FROM orders WHERE id = '".$id."'";
+	$db->query($sql);
 }
 
 function get_items_to_order($id){
@@ -130,11 +130,35 @@ return $result;
 }
 
 function get_house_desc($id){
-global $db;
-$sql = "SELECT h.id as id, h.from_order as from_date, h.to_order as to_date, c.name as name, c.surname as surname, c.is_wholesaler as is_wholesaler, o.id as order_id FROM house_to_orders as h INNER JOIN orders as o ON h.order_id = o.id  INNER JOIN clients as c ON c.id = o.client_id WHERE h.house_id ORDER BY h.from_order DESC";
-$sql = $db->query($sql);
-$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
-return $sql;
+	global $db;
+	$sql = "SELECT h.id as id, h.from_order as from_date, h.to_order as to_date, c.name as name, c.surname as surname, c.is_wholesaler as is_wholesaler, o.id as order_id FROM house_to_orders as h INNER JOIN orders as o ON h.order_id = o.id  INNER JOIN clients as c ON c.id = o.client_id WHERE h.house_id ORDER BY h.from_order DESC";
+	$sql = $db->query($sql);
+	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
+	return $sql;
+}
+
+function get_services(){
+	global $db;
+	$sql = "SELECT s.id as id, s.title as title, t.title as type_title FROM services as s INNER JOIN service_type as t ON t.id = s.type WHERE t.id != '4' ORDER BY s.id DESC";
+	$sql = $db->query($sql);
+	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
+	$res = array();
+	foreach ($sql as $ser) {
+		$id = $ser['id'];
+		$type = $ser['type_title'];
+		$title = $ser['title'];
+		array_push($res, array('id' => $id, 'type' => $type, 'title' => $title));
+	}
+	return $res;
+}
+
+function get_orders_to_service($id){
+	global $db;
+	$sql = "SELECT o.id as id, s.title as title, o.date_from as date_from, o.date_to as date_to, o.order_id as order_id, o.trainer as trainer_id, t.fio as fio FROM services_to_order as o INNER JOIN services as s ON o.service_id = s.id LEFT JOIN trainer as t ON t.id = o.trainer WHERE s.id = '".$id."'";
+	$sql = $db->query($sql);
+	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
+	return $sql;
+
 }
 
 ?>

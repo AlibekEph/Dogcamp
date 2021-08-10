@@ -29,7 +29,7 @@ rentals.controller('rentalsCtrl',  function($scope, $http){
  $scope.warning_message = "";
  $scope.conditions_of_stay = false;
  $scope.privacy_policy = false;
- $is_wholesaler = false;
+ $scope.whole_saler = false;
  $scope.sending_notifications = false;
  $scope.people_count = '1';
  $scope.phone = '';
@@ -41,6 +41,7 @@ class House{
 		date = [];
 		full = true;
 		elem = [];
+		present = false;
 		price = 0;
 		full_title = "";
 		sale = 0;
@@ -85,10 +86,15 @@ class House{
 
 		get_price(){
 			let days_count = Math.ceil(Math.abs(new Date(this.date[1]).getTime() - new Date(this.date[0]).getTime()) / (1000 * 3600 * 24));
-			return days_count * this.data.price;
+			return days_count * this.data.price * (!this.present);
 		}
 
 		get_sale(){
+			if (this.present) {
+				return 100;
+			}else{
+				return 0;
+			}
 			return this.sale;
 		}
 
@@ -105,7 +111,7 @@ class House{
 		}
 
 		get_button_text(){
-			return this.choose ? "выбрано" : "выбрать";
+			return this.present ? 'подарок' : (this.choose ? "выбрано" : "выбрать");
 		}
 
 	}
@@ -782,19 +788,49 @@ class House{
 	$scope.houses = [];
 	$scope.whole_saler_privicy = false;
 	
+	$scope.check_houses_to_present = function(){
+		let choosen_houses = [];
+		for (var i = $scope.houses.length - 1; i >= 0; i--) {
+			if($scope.houses[i].choose){
+				choosen_houses.push($scope.houses[i]);
+			}
+		}
+		let present_houses_count = Math.floor(choosen_houses.length / 7);
+		console.log(present_houses_count);
+		let sorted_houses = choosen_houses;
+		for (var i = 0; i < $scope.houses.length; i++) {
+			$scope.houses[i].present = false;
+		}
+		sorted_houses = sorted_houses.sort(function (a, b){
+		 if (a.data.class < b.data.class) return -1;
+	  if (a.data.class > b.data.class) return 1;
+	  // при равных score сортируем по time
+	  if (a.price < b.price) return -1;
+	  if (a.price > b.price) return 1;
+		}).reverse();
+		console.log(sorted_houses);
+		for (var i = 0; i < $scope.houses.length; i++) {
+			$scope.houses[i].present = false;
+		}	
+		for (var i = 0; i < present_houses_count; i++) {
+			sorted_houses[i].present = true;
+		}
+		console.log(sorted_houses);
+	}
 
 	$scope.rent_all = function() {
 		$scope.whole_saler = true;
 		for (var i = $scope.houses.length - 1; i >= 0; i--) {
 			$scope.houses[i].choose_house();
 		}
+		$scope.check_houses_to_present();
 	};
 
 
 	$scope.update = function(){	
 		$scope.house_start.setUTCHours(0,0,0);
 		$scope.house_end.setUTCHours(0,0,0);
-
+		$scope.check_houses_to_present();
  	$scope.house_start.min_date = new Date();
 	$scope.house_end.min_date = new Date(
 			$scope.house_start.getFullYear(),
@@ -970,8 +1006,8 @@ class House{
 				}
 			}
 			$scope.pre_sum = pre_sum;
-
-			if($scope.whole_saler || elem.length >= 6){
+			console.log(elem);
+			if(elem.length > 6){
 				$scope.whole_saler = true;
 				$scope.whole_saler_preview();
 			}else{

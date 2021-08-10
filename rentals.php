@@ -96,7 +96,7 @@ include_once("header.php") ?>
 								<div class="rentals-card-header">{{house.data.title}}</div>
 								<div class="rentals-card-desc">{{house.data.description}}</div>
 								<div class="rentals-card-btn-holder">
-									<button ng-click="change_btn(house)" ng-class="house.choose ? 'active' : '' " class="rentals-card-btn btn">{{house.get_button_text()}}</button>
+									<button ng-click="change_btn(house)" ng-class="{'present-house-btn' : house.present, 'active' : house.choose}" class="rentals-card-btn btn">{{house.get_button_text()}}</button>
 									<button ng-if="house.choose" class="rentals-card-btn btn mt-3 choosen-house-lable">Забронировано <br> с {{house.get_user_date()[0]}} по {{house.get_user_date()[1]}}</button>
 								</div>
 							</div>
@@ -204,15 +204,6 @@ include_once("header.php") ?>
 
 				<d-service ng-repeat="cart_elem in cart.get_services()"  attributes="{'class': cart_elem.class}" >
 				</d-service>
-				
-
-
-
-
-
-
-
-
 				<div class="col-12 mt-3 mb-3 text-center">
 					<label for="">Соглашение с условиями пребывания в кемпинге *</label>
 					<input ng-model="conditions_of_stay" type="checkbox" class="form-control">
@@ -273,7 +264,6 @@ include_once("header.php") ?>
 		</div>
 	</div>
 </div>
-
 <div id="success-message" class="modal-overlay house-info-modal d-none">
 	<div class="modal-popup warning-popup">
 		<div class="modal-head">
@@ -288,7 +278,6 @@ include_once("header.php") ?>
 		</div>
 	</div>
 </div>
-
 <div id="wholesaller-message" class="modal-overlay house-info-modal d-none">
 	<div class="modal-popup warning-popup">
 		
@@ -356,6 +345,10 @@ include_once("header.php") ?>
 	width:450px;
 	max-width: 95%;
 	overflow-y: hidden;
+}
+.present-house-btn{
+	background-color: #ffdc33 !important;
+    border: #ffdc33 solid !important;
 }
 </style>
 
