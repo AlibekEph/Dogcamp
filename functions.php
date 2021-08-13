@@ -131,7 +131,7 @@ return $result;
 
 function get_house_desc($id){
 	global $db;
-	$sql = "SELECT h.id as id, h.from_order as from_date, h.to_order as to_date, c.name as name, c.surname as surname, c.is_wholesaler as is_wholesaler, o.id as order_id FROM house_to_orders as h INNER JOIN orders as o ON h.order_id = o.id  INNER JOIN clients as c ON c.id = o.client_id WHERE h.house_id ORDER BY h.from_order DESC";
+	$sql = "SELECT h.id as id, h.from_order as from_date, h.to_order as to_date, c.name as name, c.surname as surname, c.is_wholesaler as is_wholesaler, o.id as order_id FROM house_to_orders as h INNER JOIN orders as o ON h.order_id = o.id  INNER JOIN clients as c ON c.id = o.client_id WHERE h.house_id = '".$id."' ORDER BY h.from_order DESC";
 	$sql = $db->query($sql);
 	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
 	return $sql;

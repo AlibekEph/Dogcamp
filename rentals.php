@@ -72,10 +72,10 @@ include_once("header.php") ?>
 								<div class="rentals-sitebar-header">По дате</div>
 					<md-datepicker ng-model="house_start"  md-min-date="house_start.min_date" ng-change="update()" md-placeholder="Enter date"
                      input-aria-describedby="datepicker-description"
-                     input-aria-labelledby="datepicker-header "></md-datepicker>
+                     input-aria-labelledby="datepicker-header " md-date-filter="onlyWeekendsPredicate"></md-datepicker>
                      <md-datepicker ng-model="house_end" ng-change="update()" md-min-date="house_end.min_date" md-placeholder="Enter date"
                      input-aria-describedby="datepicker-description"
-                     input-aria-labelledby="datepicker-header "></md-datepicker>
+                     input-aria-labelledby="datepicker-header " md-date-filter="onlyWeekendsPredicate2"></md-datepicker>
 							</div>
 							<div class="filter-box filter-date">
 								<button class="btn btn-main w-100" ng-click="pre_open_cart()" id="take-offer" type="button">Перейти к заказу</button>
@@ -304,7 +304,16 @@ include_once("header.php") ?>
 		</div>
 	</div>
 </div>
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#CB759F"/></svg></div>
+<!-- <script type="text/javascript">$(document).ready(function(){$('[href*="brandjs"],.w-webflow-badge').attr('style', 'display:none !important');$('a[href="'+window.location.href+'"]').addClass('w--current');});</script>
+		<script>
+			window.onload = function(){
+				setTimeout(function(){
+					document.querySelector('#ftco-loader').classList.remove('show');
+				}, 100)
+			}
 
+		</script> -->
 </div>
 <style type="text/css">
 	.md-datepicker-calendar-pane{

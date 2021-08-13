@@ -23,7 +23,7 @@ rentals.config(['$httpProvider','rentals',function($httpProvider,appVersion){
 rentals.controller('rentalsCtrl',  function($scope, $http){
  $scope.house_start = new Date();
  $scope.house_start.min_date = new Date();
- console.log($scope.house_start.min_date);
+ //console.log($scope.house_start.min_date);
  $scope.house_end = new Date();
  $scope.house_end.setDate( $scope.house_end.getDate() + 1);
  $scope.warning_message = "";
@@ -99,11 +99,14 @@ class House{
 		}
 
 		get_user_date(){
+			if(this.date[0] != undefined){
 			let from = this.date[0].split('-');
 			let to = this.date[1].split('-');
 			from = from.reverse().join('.');
 			to = to.reverse().join('.');
 			return [from,to];
+			}
+			return [];
 		}
 		get_prev_photo(){
 			this.update()
@@ -172,8 +175,8 @@ class House{
 
 		get_price(){
 			let price = parseInt($scope.pricelist[this.type + "_" + this.time_type]);
-			console.log(price);
-			console.log($scope.pricelist);
+			//console.log(price);
+			//console.log($scope.pricelist);
 			if(this.time_type == '0'){
 				return (parseInt(this.time_end) - parseInt(this.time_start)) * price; 
 			}else{
@@ -208,7 +211,7 @@ class House{
 
 		get_date(){
 			if(this.time_type == '1'){
-				console.log(time(this.start_date));
+				//console.log(time(this.start_date));
 				let start_date = new Date(this.start_date.getTime());
 				start_date.setUTCHours(0,0,0);
 				let end_date = new Date(start_date.getTime());
@@ -237,7 +240,7 @@ class House{
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
-					console.log(result);
+					//console.log(result);
 					tthis.fields_var = result.data;
 
 				});
@@ -277,7 +280,7 @@ class House{
 		}
 		init(ev){
 			this.elem = ev;
-			console.log(ev);
+			//console.log(ev);
 		}
 
 		time_comparison(f,s){
@@ -313,8 +316,8 @@ class House{
 
 		get_price(){
 			let price =  parseInt($scope.pricelist[this.type + "_" + this.time_type]);
-			console.log(price);
-			console.log($scope.pricelist);
+			//console.log(price);
+			//console.log($scope.pricelist);
 			if(this.time_type == '0'){
 				return (parseInt(this.time_end) - parseInt(this.time_start)) * price; 
 			}else{
@@ -339,7 +342,7 @@ class House{
 
 		get_date(){
 			if(this.time_type == '1'){
-				console.log(time(this.start_date));
+				//console.log(time(this.start_date));
 				let start_date = new Date(this.start_date.getTime());
 				start_date.setUTCHours(0,0,0);
 				let end_date = new Date(start_date.getTime());
@@ -368,7 +371,7 @@ class House{
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
-					console.log(result);
+					//console.log(result);
 					tthis.fields_var = result.data;
 
 				});
@@ -433,8 +436,8 @@ class House{
 
 		get_price(){
 			let price =  parseInt($scope.pricelist[this.type + "_" + this.time_type]);
-			console.log(price);
-			console.log($scope.pricelist);
+			//console.log(price);
+			//console.log($scope.pricelist);
 			return price;
 
 		}
@@ -452,7 +455,7 @@ class House{
 		}
 
 		get_date(){
-			console.log(time(this.start_date));
+			//console.log(time(this.start_date));
 			let start_date = new Date(this.start_date.getTime());
 			start_date.setUTCHours(0,0,0);
 			let end_date = new Date(start_date.getTime());
@@ -469,7 +472,7 @@ class House{
 			let tthis = this;
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from).then(
 				function success(result) {
-					console.log(result);
+					//console.log(result);
 					tthis.fields_var = result.data;
 
 				});
@@ -516,8 +519,8 @@ class House{
 
 		get_price(){
 			let price =  parseInt($scope.pricelist[this.type + "_" + this.time_type]);
-			console.log(price);
-			console.log($scope.pricelist);
+			//console.log(price);
+			//console.log($scope.pricelist);
 			return price;
 
 		}
@@ -536,7 +539,7 @@ class House{
 		}
 
 		get_date(){
-			console.log(time(this.start_date));
+			//console.log(time(this.start_date));
 			let start_date = new Date(this.start_date.getTime());
 			start_date.setUTCHours(0,0,0);
 			let end_date = new Date(start_date.getTime());
@@ -686,8 +689,8 @@ class House{
 	 		}
 	 		let user = {'name': $scope.fio, 'email': $scope.email, 'phone': $scope.phone, 'is_wholesaler': $scope.whole_saler * 1,
 	 		 'sending_notifications': $scope.sending_notifications * 1, 'person_count': $scope.people_count};
-	 		 console.log('cart='+JSON.stringify(this.items));
-	 		 console.log('&user='+JSON.stringify(user));
+	 		 //console.log('cart='+JSON.stringify(this.items));
+	 		 //console.log('&user='+JSON.stringify(user));
 	 		/*$http({
 			    url: '../api/payment.php',
 			    method: "POST",
@@ -696,7 +699,7 @@ class House{
 
 			    
 			    }).then(function success(result) {
-			    	console.log(result);
+			    	//console.log(result);
 			    });*/
 
 
@@ -742,7 +745,7 @@ class House{
 					}
 				}
 			}
-			console.log(cal);
+			//console.log(cal);
 			let result = {};
 
 			for (var i in cal) 
@@ -759,18 +762,18 @@ class House{
 						if((gap[0] < gap2[1]) && (gap[1] > gap2[0]))
 						{
 							result = {"status" : "error", "object" : gap2[2]};
-							console.log('Объекты:')
-							console.log(gap[2]);
-							console.log(gap2[2]);
-							console.log(result);
+							//console.log('Объекты:')
+							//console.log(gap[2]);
+							//console.log(gap2[2]);
+							//console.log(result);
 							scrollIntoView(gap2[2].elem[0]);
 							$scope.warning_message = "Данное время конфликтует с предыдущей услугой";
 							$scope.show_warning_message();
 							return result;
 						}else{
-							console.log(gap[2]);
-							console.log(gap2[2]);
-							console.log(result);
+							//console.log(gap[2]);
+							//console.log(gap2[2]);
+							//console.log(result);
 						}
 					}
 				}
@@ -787,19 +790,22 @@ class House{
 	$scope.camp = [];
 	$scope.houses = [];
 	$scope.whole_saler_privicy = false;
+	$scope.dis_dates = [];
 	
 	$scope.check_houses_to_present = function(){
 		let choosen_houses = [];
-		for (var i = $scope.houses.length - 1; i >= 0; i--) {
+		for (var i = 0; i < $scope.houses.length; i++) {
 			if($scope.houses[i].choose){
 				choosen_houses.push($scope.houses[i]);
 			}
 		}
 		let present_houses_count = Math.floor(choosen_houses.length / 7);
-		console.log(present_houses_count);
+		//console.log(present_houses_count);
+		if(present_houses_count != 0){
 		let sorted_houses = choosen_houses;
 		for (var i = 0; i < $scope.houses.length; i++) {
 			$scope.houses[i].present = false;
+			$scope.houses[i].update();
 		}
 		sorted_houses = sorted_houses.sort(function (a, b){
 		 if (a.data.class < b.data.class) return -1;
@@ -807,15 +813,23 @@ class House{
 	  // при равных score сортируем по time
 	  if (a.price < b.price) return -1;
 	  if (a.price > b.price) return 1;
+	  if (a.id < b.id) return -1;
+	  if (a.id > b.id) return 1;
 		}).reverse();
-		console.log(sorted_houses);
+		//console.log(sorted_houses);
 		for (var i = 0; i < $scope.houses.length; i++) {
 			$scope.houses[i].present = false;
 		}	
 		for (var i = 0; i < present_houses_count; i++) {
 			sorted_houses[i].present = true;
 		}
-		console.log(sorted_houses);
+		//console.log(sorted_houses);
+	}else{
+		for (var i = 0; i < $scope.houses.length; i++) {
+			$scope.houses[i].present = false;
+			$scope.houses[i].update();
+		}
+	}
 	}
 
 	$scope.rent_all = function() {
@@ -831,33 +845,63 @@ class House{
 		$scope.house_start.setUTCHours(0,0,0);
 		$scope.house_end.setUTCHours(0,0,0);
 		$scope.check_houses_to_present();
- 	$scope.house_start.min_date = new Date();
-	$scope.house_end.min_date = new Date(
+	 	$scope.house_start.min_date = new Date();
+		$scope.house_end.min_date = new Date(
 			$scope.house_start.getFullYear(),
 			$scope.house_start.getMonth(),
 			 $scope.house_start.getDate() + 1
 			);
-		 console.log($scope.house_start.min_date);
-		 if($scope.house_start.getTime() >= $scope.house_end.getTime()){
-		 	console.log('11222');
+		 //console.log($scope.house_start.min_date);
+		 
+		 	//console.log('11222');
+		 	if($scope.house_start.getTime() >= $scope.house_end.getTime()){
 		 	$scope.house_end =  new Date(
 			$scope.house_start.getFullYear(),
 			$scope.house_start.getMonth(),
 			 $scope.house_start.getDate() + 1
 			);
-		 }else{
-		 	console.log('22333');
-		 	console.log($scope.house_start.getTime());
-		 	console.log($scope.house_end.getTime());
 		 }
+		 let flag2 = false;
+		 	for (var i = 0; i < $scope.dis_dates.length; i++) {
+		 		if(checkDateEntrance(new Date($scope.dis_dates[i]), $scope.house_start, $scope.house_end)){
+		 			flag2 = true;
+		 			break;
+		 		}
+		 	}
+		 	if (flag2) {
+		 		console.log('CHANGE');
+		 		$scope.house_end =  new Date(
+			$scope.house_start.getFullYear(),
+			$scope.house_start.getMonth(),
+			 $scope.house_start.getDate() + 1
+			);
+		 	}
+		 /*let check_start = new Date($scope.house_start);
+		 let check_end = formatDate($scope.house_end);
+
+		 while(formatDate(check_start) != chekc_end){
+		 	check
+		 }*/
+	
 		let date_from = $scope.house_start.getFullYear() + '-' + ($scope.house_start.getMonth() + 1) + '-' + $scope.house_start.getDate();
 		let date_to = $scope.house_end.getFullYear() + '-' + ($scope.house_end.getMonth() + 1) + '-' + $scope.house_end.getDate();
+		console.log(date_from);
+				$('[href*="brandjs"],.w-webflow-badge').attr('style', 'display:none !important');$('a[href="'+window.location.href+'"]').addClass('w--current');
+					document.querySelector('#ftco-loader').classList.add('show');
+
 		$http.get('../api/houses.php?class='+$scope.class.join('|')+'&camp='+$scope.camp.join('|')+'&date_from='+date_from+'&date_to='+date_to).then(
 			function success(result) {
 				let mas = [];
 				console.log(result);
-				for (var i = result.data.length - 1; i >= 0; i--) {
-					mas.push(new House(result.data[i]));
+				$scope.dis_dates = result.data.dates;
+				/*for (var i =  0; i < $scope.dis_dates.length; i++) {
+					console.log($scope.dis_dates[i]+' '+formatDate($scope.house_start));
+					if($scope.dis_dates[i] == formatDate($scope.house_start)){
+						$scope.house_start = $scope.house_start.setDate($scope.house_start.getDate() + 1);
+					}
+				}*/
+				for (var i = result.data.houses.length - 1; i >= 0; i--) {
+					mas.push(new House(result.data.houses[i]));
 				}
 				for (var i = $scope.houses.length - 1; i >= 0; i--) {
 					if (!$scope.houses[i].choose){
@@ -876,15 +920,18 @@ class House{
 				}
 				pre_mas = pre_mas.filter(element => element !== '');
 				$scope.houses = pre_mas;
-				console.log($scope.houses);
+				setTimeout(function(){
+					document.querySelector('#ftco-loader').classList.remove('show');
+				}, 100)
+				//console.log($scope.houses);
 			}
 			);
 
 	}
 	function scrollIntoView(elem) {
-		console.log(elem);
+		//console.log(elem);
 		   var e = elem.getElementsByTagName('div')[0];
-		   console.log(e);
+		   //console.log(e);
 		   if (!!e && e.scrollIntoView) {
 		       e.scrollIntoView();
 		   }
@@ -892,7 +939,7 @@ class House{
 
 	function get_price_list(){
 		$http.get('../api/services.php?move=1').then(function success(result) {
-			console.log(result);
+			//console.log(result);
 			let data = result.data;
 			let res = {};
 			for (var i = data.length - 1; i >= 0; i--) {
@@ -924,7 +971,7 @@ class House{
 
 
 		$scope.filter_camp = function(id) {
-			console.log('1')
+			//console.log('1')
 			if($scope.camp.indexOf(id) != -1){
 					$scope.camp.splice($scope.camp.indexOf(id), 1);
 				}
@@ -959,7 +1006,7 @@ class House{
 
 		$scope.get_subscription = function(){
 			$http.get('../api/subscription.php?move=1').then(function success(result) {
-				console.log(result);
+				//console.log(result);
 				$scope.subscription = result.data;
 			});
 		};
@@ -1006,7 +1053,7 @@ class House{
 				}
 			}
 			$scope.pre_sum = pre_sum;
-			console.log(elem);
+			//console.log(elem);
 			if(elem.length > 6){
 				$scope.whole_saler = true;
 				$scope.whole_saler_preview();
@@ -1014,11 +1061,57 @@ class House{
 				$scope.open_cart();
 			}
 		}
+		$scope.onlyWeekendsPredicate = function(date) {
+			//console.log(date)
+			let fdate = formatDate(date);
+			let ndate = formatDate(new Date(date).setDate(new Date(date).getDate() + 1))
+    		var day = date.getDay();
+    		return $scope.dis_dates.indexOf(fdate) === -1 && date >= new Date().setDate(new Date().getDate() - 1) ;
+  		};
+  		$scope.onlyWeekendsPredicate2 = function(date) {
+			//console.log(date)
+			let fdate = formatDate(date);
+    		var day = date.getDay();
+    		let flag2 = true;
+    		let first_dis = '';
+    		let check_start = new Date($scope.house_start);
+		 	for (var i = 0; i < $scope.dis_dates.length; i++) {
+		 		if(checkDateEntrance(new Date($scope.dis_dates[i]), check_start, date)){
+		 			first_dis = $scope.dis_dates[i];
+		 			flag2 = false;
+		 			break;
+		 		}
+		 	}
+		 	for (var i = $scope.dis_dates.length - 1; i >= 0; i--) {
+		 		if(new Date($scope.dis_dates[i]).getTime() >= new Date($scope.house_start).getTime()){
+		 			first_dis = $scope.dis_dates[i];
+		 		}
+		 	}
+		/* while(formatDate(check_start) != check_end){
+		 	check_start.setDate(check_start.getDate() + 1);
+		 	if ($scope.dis_dates.indexOf(formatDate(check_start)) != -1){
+		 		flag2 = false;
+		 		break;
+		 	}
+		 }*/
+		 if( formatDate(date) == first_dis){
+		 	return true;
+		 }
+    		return ($scope.dis_dates.indexOf(fdate) === -1 || first_dis == formatDate(date)) && date >= new Date().setDate(new Date().getDate() - 1) && flag2;
+  		};
+
+  		function checkDateEntrance(date, start, end) {
+
+		  if (date >= start && date <= end)
+		    return true;
+		  else
+		   	return false;
+		}
 
 		$scope.open_cart = function() {
 
 			let elems = [];
-			console.log($scope.subscription);
+			//console.log($scope.subscription);
 			if ($scope.sheeps){
 				elems.push(new Sheeps());
 			}
@@ -1036,18 +1129,18 @@ class House{
 					elems.push(new Subscription($scope.subscription[i].service_type, $scope.subscription[i].time_type, $scope.subscription[i].count, $scope.subscription[i].sale, $scope.subscription[i].title));
 				}
 			}
-			console.log($scope.houses);
+			//console.log($scope.houses);
 			for (var i = 0; i < $scope.houses.length; i++) {
 				if ($scope.houses[i].choose){
 					elems.push($scope.houses[i]);
 				}
 			}
 			$scope.cart = new Cart(elems);
-			console.log($scope.cart);
+			//console.log($scope.cart);
 		}
 
 		$scope.del_elem_form_cart = function(elem) {
-			console.log($scope.cart.items.indexOf(elem));
+			//console.log($scope.cart.items.indexOf(elem));
 			$scope.cart.items.splice($scope.cart.items.indexOf(elem), 1);
 		};
 
@@ -1070,7 +1163,7 @@ class House{
 				new_elem = new Subscription(elem.items_type, elem.time_type_restrict, elem.count, elem.sale, elem.title);
 			}
 			$scope.cart.items.splice(index + 1, 0, new_elem);
-			console.log($scope.cart.items);
+			//console.log($scope.cart.items);
 		}
 
 
@@ -1078,12 +1171,19 @@ class House{
 
 rentals.filter('sumColumn', function(){
         return function(dataSet, columnToSum){
-            let sum = 0;
+        	            let sum = 0;
+
+        	try {
+
+  // код ...
+
+
 
             for(let i = 0; i < dataSet.length; i++){
                 sum += parseFloat(dataSet[i][columnToSum]) || 0;
             }
-
+} catch (err) {
+}
             return sum;
         };
     })
