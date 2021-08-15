@@ -39,13 +39,13 @@
         <a href="add_item.php" class="nav-link">Добавить дом</a>
       </li>
        <li class="nav-item">
-        <a href="subscriptions.php" class="nav-link">Заказы</a>
+        <a href="orders.php" class="nav-link">Заказы</a>
       </li>
       <li class="nav-item">
         <a href="services.php" class="nav-link">Сервисы</a>
       </li>
        <li class="nav-item">
-        <a href="orders.php" class="nav-link">Абонементы</a>
+        <a  href="subscriptions.php" class="nav-link">Абонементы</a>
       </li>
 
 

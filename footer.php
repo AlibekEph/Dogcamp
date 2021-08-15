@@ -25,7 +25,7 @@
 		<script>
 			window.onload = function(){
 				setTimeout(function(){
-					document.querySelector('#ftco-loader').classList.remove('show');
+					document.querySelector('#ftco-loader-update').classList.remove('show');
 				}, 100)
 			}
 

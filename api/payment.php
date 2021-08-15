@@ -15,16 +15,15 @@ $user = json_decode($_POST['user'], true);
 	$sql = "SELECT * FROM clients WHERE (name = '".$name."' AND surname = '".$surname."') OR email = '".$email."' ";
 	$sql = $db->query($sql);
 	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
-	if(coutn($sql) == 0){
+	if(count($sql) == 0){
 		$sql = "INSERT INTO `clients` (`id`, `name`, `surname`, `email`, `phone`, `is_wholesaler`, `terms_of_the_privacy_policy`, `promotions_and_so_on`) VALUES (NULL, '".$name."', '".$surname."', '".$email."', '".$phone."', '".$is_wholesaler."', '1', '".$send_not."')";
 		$db->query($sql);
 		$last_id = 'SELECT MAX(`id`) FROM `clients`';
-		$last_id = $this->db->query($last_id);
+		$last_id = $db->query($last_id);
 		$client_id = ( int ) mysqli_fetch_all($last_id, MYSQLI_ASSOC)[0]["MAX(`id`)"];
 	}else{
 		$client_id = $sql[0]['id'];
 	}
-
 //подсчет стоимости
 	$pricelist = "SELECT * FROM pricelist";
 	$pricelist = $db->query($pricelist);
@@ -39,11 +38,11 @@ $user = json_decode($_POST['user'], true);
 
 
 //создаю заказ
-	$order = "INSERT INTO `orders` (`id`, `client_id`, `coast`, `persons_count`, `date`) VALUES (NULL, '".$client_id."', '".$sum."', '".$user['persons_count']."', CURRENT_DATE())";
-
+	$order = "INSERT INTO `orders` (`id`, `client_id`, `coast`, `persons_count`, `date`) VALUES (NULL, '".$client_id."', '".$sum."', '".$user['person_count']."', CURRENT_DATE())";
+	echo $order;
 	$db->query($order);
 	$last_id = 'SELECT MAX(`id`) FROM `orders`';
-	$last_id = $this->db->query($last_id);
+	$last_id = $db->query($last_id);
 	$order_id = ( int ) mysqli_fetch_all($last_id, MYSQLI_ASSOC)[0]["MAX(`id`)"];
 
 //добавляю каждый сервис
@@ -52,7 +51,7 @@ foreach ($cart as $elem) {
 	switch ($elem['class']) {
 		case 'house':
 			$house_sql = "INSERT INTO `house_to_orders` (`id`, `order_id`, `house_id`, `from_order`, `to_order`, `coast`, `sale`) VALUES (NULL, '".$order_id."', '".$elem['data']['id']."', '".$elem['date'][0]."', '".$elem['date'][1]."', '".$elem['price']."', '".$elem['sale']."')";
-			$db->query();
+			$db->query($house_sql);
 			break;
 
 		case 'playpen':
@@ -150,22 +149,48 @@ foreach ($cart as $elem) {
 
 $vars = array();
  
-$vars['userName'] = 'логин';
-$vars['password'] = 'пароль';
+$vars['userName'] = 'T490904206589-operator';
+$vars['password'] = 'T490904206589';
  
 /* ID заказа в магазине */
 $vars['orderNumber'] = $order_id;
  
 /* Корзина для чека (необязательно) */
+ $cart = array(
+	array(
+		'positionId' => 1,
+		'name' => 'Название товара',
+		'quantity' => array(
+			'value' => 1,    
+			'measure' => 'шт'
+		),
+		'itemAmount' => 1 * (1000 * 100),
+		'itemCode' => '123456',
+		'tax' => array(
+			'taxType' => 0,
+			'taxSum' => 0
+		),
+		'itemPrice' => 1000 * 100,
+	)
+);
+ 
+$vars['orderBundle'] = json_encode(
+	array(
+		'cartItems' => array(
+			'items' => $cart
+		)
+	), 
+	JSON_UNESCAPED_UNICODE
+);
  
 /* Сумма заказа в копейках */
 $vars['amount'] = (Int)$sum * 100;
  
 /* URL куда клиент вернется в случае успешной оплаты */
-$vars['returnUrl'] = PROTOCOL'://'.DOMAIN.'/payment/success.php';
+$vars['returnUrl'] = PROTOCOL.'://'.DOMAIN.'/payment/success.php';
 	
 /* URL куда клиент вернется в случае ошибки */
-$vars['failUrl'] = PROTOCOL'://'.DOMAIN.'/payment/error.php';
+$vars['failUrl'] = PROTOCOL.'://'.DOMAIN.'/payment/error.php';
  
 /* Описание заказа, не более 24 символов, запрещены % + \r \n */
 $vars['description'] = 'Заказ №' . $order_id ;
@@ -178,13 +203,13 @@ $res = curl_exec($ch);
 curl_close($ch);
 $res = json_decode($res, JSON_OBJECT_AS_ARRAY);
 if (empty($res['orderId'])){
-	echo $res['errorMessage'];						
+	//echo $res['errorMessage'];						
 } else {
 	/* Успех: */
 	/* Тут нужно сохранить ID платежа в своей БД - $res['orderId'] */
  
 	/* Перенаправление клиента на страницу оплаты */
-	echo json_encode($res);
+	//echo json_encode($res);
 }
 
 ?>
