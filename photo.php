@@ -9,18 +9,17 @@ include_once("header.php") ?>
 				</div>
 			</div>
 		</div>
-		<div class="container pl-3 pr-3">
-			<div class="row mt-5">
-				<div class="col-12 text-center">	
-						<video class="w-100" controls="controls">
-						   <source src="images/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-						 </video>
-				</div>	
-			</div>	
-		</div>
-		<div class="s2-photo">
+
+		<div class="s2-photo" style="overflow-x:hidden;">
 			<div class="container w-container">
 				<div class="s2-photo-wrap">
+				    <div class="row mt-5 mb-4">
+				        <div class="col-12 text-center">	
+    						<video class="w-100" controls="controls">
+    						   <source src="images/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    						</video>
+			        	</div>	
+			        </div>
 					<h1 class="h1">Фото</h1>
 					<div class="photo-gallery">
 						<div class="gallery-wrap"><img src="images/1.jpg" loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 45vw, (max-width: 991px) 29vw, 30vw" srcset="images/1-p-500.jpeg 500w, images/1-p-1080.jpeg 1080w, images/1.jpg 1280w" alt="" class="gallery-img"></div>

@@ -4,8 +4,8 @@
 				<div class="col-12 mt-3 mb-3">
 					<label for="">Вид оплаты</label>
 					<select ng-model="cart_elem.time_type" ng-change="cart_elem.update()" class="form-control w-100">
-						<option ng-if="cart_elem.time_type_restrict == 0 || cart_elem.time_type_restrict == -1" value="0">Почасовая</option>
-						<option ng-if="cart_elem.time_type_restrict == 1 || cart_elem.time_type_restrict == -1" value="1">За день</option>
+						<option value="0">Почасовая</option>
+						<option value="1">За день</option>
 					</select>
 				</div>
 				
@@ -20,24 +20,24 @@
 				
 				</div>
 				<div ng-if="cart_elem.time_type == 0" class="col-6 mt-4 mb-4">
-					<label for="from">From: </label>
-				  <select ng-model="cart_elem.time_start" ng-change="cart_elem.get_free_fields()">
-				    <option ng-repeat="timee in cart_elem.time_start_vals" value="{{timee}}">{{timee}}:00</option>
-				  </select>
+					<label for="from">Время от: </label>
+				  <select class="form-control" ng-model="cart_elem.time_start" ng-change="cart_elem.get_free_fields()" ng-options="timee as timee+':00' for timee in cart_elem.time_start_vals">
+<!-- 				    <option ng-repeat="timee in cart_elem.time_start_vals" value="{{timee}}">{{timee}}:00</option>
+ -->				  </select>
 				</div>
 				<div ng-if="cart_elem.time_type == 0" class="col-6 mt-4 mb-4">
-				  <label for="to">To: </label>
-				   <select ng-model="cart_elem.time_end" ng-change="cart_elem.get_free_fields()">
-				    <option ng-repeat="time in cart_elem.time_end_vals" ng-if="cart_elem.time_comparison(cart_elem.time_start, time)" value="{{time}}">{{time}}:00</option>
+				  <label for="to">Время до: </label>
+				   <select class="form-control" ng-model="cart_elem.time_end" ng-change="cart_elem.get_free_fields()" ng-options="timee as timee+':00' for timee in cart_elem.get_to_times()">
+				   <!--  <option ng-repeat="time in cart_elem.time_end_vals" ng-if="cart_elem.time_comparison(cart_elem.time_start, time)" value="{{time}}">{{time}}:00</option> -->
 				  </select>
 				</div>
 					<div class="col-12 mt-3 mb-3">
 					<label for="">Выбор поля</label>
-					<select ng-model="cart_elem.choosen_id" ng-change="cart_elem.check_full()" ng-class="cart_elem.choosen_id == '0' ? 'select-attention' : ''" class="form-control w-100">
-						<option ng-if="cart_elem.fields_var.length != 0" value="0">Выберите поле</option>
-						<option ng-if="cart_elem.fields_var.length == 0" value="0">К сожалению в это время нет доступных полей</option>
-						<option ng-repeat="field in cart_elem.fields_var" value="{{field.id}}">{{field.title}}</option>
-					</select>
+					<select ng-model="cart_elem.choosen_id" ng-change="cart_elem.check_full()" ng-class="cart_elem.choosen_id == '0' ? 'select-attention' : ''" class="form-control w-100" ng-options="field.id as field.title for field in cart_elem.fields_var">
+						<!-- <option ng-if="cart_elem.fields_var.length != 0" value="0">Выберите поле</option>
+						<option ng-if="cart_elem.fields_var.length == 0" value="0">К сожалению в это время нет доступных полей</option> -->
+<!-- 						<option ng-repeat="field in cart_elem.fields_var" value="{{field.id}}">{{field.title}}</option>
+ -->					</select>
 				</div>
 				<div ng-if="cart_elem.buttons" class="col-6 mt-4 mb-4">
 					<button ng-click="copy_elem_from_cart(cart_elem)" class="w-100 btn">Добавить еще один день</button>

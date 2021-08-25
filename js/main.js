@@ -27,11 +27,3 @@ for(let btn of rentalBtns){
 		}
 	})
 }
-
-for(let card of rentalCards){
-	card.addEventListener("click", function(e){
-		if(!e.target.classList.contains("rentals-card-btn")){
-			document.querySelector(".house-info-modal").classList.remove("d-none")
-		}
-	})
-}

@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . "/functions.php"); ?>
 				<div class="col-12 mb-3 mt-3">
-					<h4>Тренировка</h4>
+					<h4>Бронирования для занятий с тренером</h4>
 				</div>
 				<div class="col-md-6 col-12 mt-3 mb-3 text-center">
 					<md-datepicker ng-model="cart_elem.start_date" class="form-control w-100"  md-min-date="cart_elem.min_date" ng-change="cart_elem.get_free_fields()" md-placeholder="Enter date"

@@ -2,35 +2,21 @@
 include($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
 $title = "Аренда";
 include_once("header.php") ?>
-<div ng-app="rentals" ng-controller="rentalsCtrl">
+<div ng-app="rentals" ng-controller="rentalsCtrl" style="background:#FAFAFA">
 <div class="s1-rentals">
 	<div class="container w-container">
    <div class="s1-rentals-wrap">
-      <div class="menu-block-riding-hall"><a href="/" class="menu-link">Горыныч</a><a href="/school.php" class="menu-link">Школа</a><a href="/malinovo.php" class="menu-link">Малиново</a><a href="/riding-hall.php" class="menu-link">Манеж</a><a href="/rentals.php" aria-current="page" class="menu-link w--current">аренда<br></a><a href="/shares.php" class="menu-link">Акции</a><a href="/photo.php" class="menu-link">фото</a><a href="/contacts.php" class="menu-link">Контакты</a></div>
-      <div class="offers-wrap">
-         <a href="/rentals.php" aria-current="page" class="offers-link-block w-inline-block w--current">
-            <div class="offers-desc">Аренда домика</div>
-            <img src="images/Group20(2).png" loading="lazy" alt="" class="vektor-1">
-         </a>
-         <a href="#" class="offers-link-block w-inline-block">
-            <div class="offers-desc">запись на пастьбу</div>
-            <img src="images/Group20(3).png" loading="lazy" alt="" class="vektor-2">
-         </a>
-         <a href="/shares.php" class="offers-link-block w-inline-block">
-            <div class="offers-desc">наши акции</div>
-            <img src="images/gift201.png" loading="lazy" alt="" class="vektor-3">
-         </a>
-      </div>
+      <div class="menu-block-riding-hall" style="margin-top:50px;background:#ccc;"><a href="/" class="menu-link">Горыныч</a><a href="/school.php" class="menu-link">Школа</a><a href="/malinovo.php" class="menu-link">Малиново</a><a href="/riding-hall.php" class="menu-link">Манеж</a><a href="/rentals.php" aria-current="page" class="menu-link w--current">аренда<br></a><a href="/shares.php" class="menu-link">Акции</a><a href="/photo.php" class="menu-link">фото</a><a href="/contacts.php" class="menu-link">Контакты</a></div>
    </div>
 </div>
 </div>
 <div class="s2-rentals">
 	<div class="container w-container">
 		<div class="s2-rentals-wrap">
-			<h1 class="h1">Аренда</h1>
 			
 			<div class="rentals-wrap">
 				<div class="sidebar">
+				    
 					<div class="w-form">
 						<form action="#">
 							<div class="filter-box">
@@ -63,7 +49,7 @@ include_once("header.php") ?>
 								    ?>
 								</div>
 							</div>
-							<div id="date-filter" class="filter-box filter-date d-none">
+							<div id="date-filter" class="filter-box filter-date">
 								<div class="rentals-sitebar-header">По дате</div>
 					<md-datepicker ng-model="house_start"  md-min-date="house_start.min_date" ng-change="update()" md-placeholder="Enter date"
                      input-aria-describedby="datepicker-description"
@@ -81,9 +67,6 @@ include_once("header.php") ?>
 					</label>
 				</div>
 			</div>
-							<div class="filter-box filter-date">
-								<button class="btn btn-main w-100 d-none" ng-click="pre_open_cart()" id="take-offer" type="button">Перейти к заказу</button>
-							</div>
 						</form>
 						<div class="w-form-done">
 							<div>Thank you! Your submission has been received!</div>
@@ -92,10 +75,7 @@ include_once("header.php") ?>
 							<div>Oops! Something went wrong while submitting the form.</div>
 						</div>
 					</div>
-				</div>
-				<div class="content">
-				    <div class="content-wrap-2">
-						<div class="w-form">
+					<div class="w-form">
 							<form id="email-form-2" name="email-form-2" data-name="Email Form 2" action="#">
 								<div class="filter-box">
 									<div class="rentals-sitebar-header">Сопутствующие услуги</div>
@@ -132,57 +112,31 @@ include_once("header.php") ?>
 								<div>Oops! Something went wrong while submitting the form.</div>
 							</div>
 						</div>
+						<div class="filter-box filter-date">
+							<button class="btn btn-main w-100 d-none" ng-click="pre_open_cart()" id="take-offer" type="button">Перейти к заказу</button>
+						</div>
+				</div>
+				<div class="content">
+				    <div class="content-wrap-2">
+
 					</div>
 					<div class="content-wrap-1 houses-main-block">
                             <div id="ftco-loader-update" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#CB759F"/></svg></div>
-							<div ng-repeat="house in houses track by $index" class="rentals-card" ng-click="house_desc($event, house)"><img src="sources/houses/{{house.data.id}}/{{house.data.photo[0].name}}" loading="lazy" sizes="(max-width: 479px) 100vw, 225px"  alt="" class="rentals-card-img">
+							<div ng-repeat="house in houses | orderBy:'-data.dis' track by $index" class="rentals-card" ng-click="house_desc($event, house)"><img src="sources/houses/{{house.data.id}}/{{house.data.photo[0].name}}" loading="lazy" sizes="(max-width: 479px) 100vw, 225px"  alt="" class="rentals-card-img">
 								<div class="rentals-card-header">{{house.data.title}}</div>
 								<div class="rentals-card-desc">{{house.data.description}}</div>
-								<div class="rentals-card-desc rentals-card-price">{{house.data.price}} РУБ</div>
-								<div class="rentals-card-desc rentals-card-places">Кол-во мест: {{house.data.place_count}}</div>
-
-								<div class="rentals-card-btn-holder">
+								<div class="rentals-card-desc rentals-card-price">Стоимость: {{house.data.price}} руб./сутки</div>
+								<div class="rentals-card-desc rentals-card-places">Мест для заселения: {{house.data.place_count}}</div>
+								<div ng-if="house.data.dis == 'n'" class="rentals-card-btn-holder">
+									<button class="rentals-card-btn btn dis-btn">Недоступно</button>
+								</div>
+								<div ng-if="house.data.dis == 'y'" class="rentals-card-btn-holder">
 									<button ng-click="change_btn(house)" ng-class="{'present-house-btn' : house.present, 'active' : house.choose}" class="rentals-card-btn btn">{{house.get_button_text()}}</button>
-									<button ng-if="house.choose" class="rentals-card-btn btn mt-3 choosen-house-lable">Забронировано <br> с {{house.get_user_date()[0]}} по {{house.get_user_date()[1]}}</button>
+									<button ng-if="house.choose" class="rentals-card-btn btn mt-3 choosen-house-lable">Выбрано для аренды <br> с {{house.get_user_date()[0]}} по {{house.get_user_date()[1]}}</button>
 								</div>
 							</div>
 					</div>
 					
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="house_desc" class="modal-overlay house-info-modal d-none">
-	<div class="modal-popup">
-		<div class="modal-head">
-			<button class="btn close-popup" type="button">&times;</button>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-12">
-					<h2 class="text-center">{{choosen_house.data.camp_name}}</h2>
-				</div>
-				<div ng-repeat="img in choosen_house.data.photo" class="col-lg-4 col-md-4 col-sm-4 mt-3 mb-3">
-					<img src="sources/houses/{{choosen_house.data.id}}/{{img.name}}" loading="lazy" alt="" class="modal-img">
-				</div>
-				<div class="col-12">
-					<p>{{choosen_house.data.title}}</p>
-				</div>
-				<div class="col-12 mt-2 mb-2">
-					<h3>Категория: {{choosen_house.data.class_name}}</h3>
-				</div>
-				<div class="col-12 mt-2 mb-2">
-					<h3>Расположение: {{choosen_house.data.camp_name}}</h3>
-				</div>
-				<div class="col-12 mt-2 mb-2">
-					<h3>Кол-во человек: {{choosen_house.data.place_count}}</h3>
-				</div>
-				<div class="col-12 mt-2 mb-2">
-					<h3>Цена: {{choosen_house.data.price}} РУБ</h3>
-				</div>
-				<div class="col-12 mt-4 mb-4">
-					<button ng-click="change_btn(choosen_house)" ng-class="choosen_house.choose ? 'active' : ''" class=" w-100 btn">{{choosen_house.get_button_text()}}</button>
 				</div>
 			</div>
 		</div>
@@ -215,22 +169,21 @@ include_once("header.php") ?>
 
 				<d-service ng-repeat="cart_elem in cart.get_services()"  attributes="{'class': cart_elem.class}" >
 				</d-service>
-				<div class="col-12 mt-3 mb-3 text-center">
-					<label for="">Соглашение с условиями пребывания в кемпинге *</label>
-					<input ng-model="conditions_of_stay" type="checkbox" class="form-control">
+				<div class="col-12 mt-3 mb-3">
+					<input ng-model="conditions_of_stay" type="checkbox" class="form-control d-inline w-auto mr-2">
+					<label class="d-inline">Соглашение с условиями пребывания в кемпинге *</label>
 				</div>
-				<div class="col-12 mt-3 mb-3 text-center">
-					<label for="">Соглашение с политикой конфиденциальности *</label>
-					<input ng-model="privacy_policy" type="checkbox" class="form-control">
+				<div class="col-12 mt-3 mb-3">
+					<input ng-model="privacy_policy" type="checkbox" class="form-control d-inline w-auto mr-2">
+					<label class="d-inline">Соглашение с политикой конфиденциальности *</label>
 				</div>
-				<div class="col-12 mt-3 mb-3 text-center">
-					<label for="">Соглашение на рассылку уведомлений</label>
-					<input ng-model="sending_notifications" type="checkbox" class="form-control">
+				<div class="col-12 mt-3 mb-3">
+					<input ng-model="sending_notifications" type="checkbox" class="form-control d-inline w-auto mr-2">
+					<label class="d-inline">Соглашение на рассылку уведомлений</label>
 				</div>
 				<div class="col-12 mt-4 mb-4 text-left">
 					<h2>Заказ:</h2>
 				</div>
-			<d-house ng-repeat="house in cart.get_houses()" attributes="{'class': house.class}"></d-house>
 				<div class="col-12 mt-4 mb-4 text-left">
 					<h3 class="mt-0 mb-0">Сумма: {{ cart.items | sumColumn: 'price' }} РУБ</h3>
 				</div>
@@ -240,14 +193,19 @@ include_once("header.php") ?>
 							<tr>
 								<th scope="col">Название</th>
 								<th scope="col">Цена</th>
+								<th scope="col">Количество мест</th>
 								<th scope="col">Скидка</th>
+								<th scope="col">Удалить</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="cart_elem in cart.items">
-								<td scope="row" class="text-center p-3">{{cart_elem.full_title}}</td>
+						    
+							<tr ng-repeat="cart_elem in cart.items" ng-class="cart_elem.present? 'gift-row': ''">
+								<td scope="row" class="text-center p-3">{{cart_elem.full_title}} <img ng-if="cart_elem.present" src="images/gift201.png" loading="lazy" class="vektor-3 m-0"></td>
 								<td class="text-center p-3">{{cart_elem.price}} </td>
+								<td class="text-center p-3">{{cart_elem.data.place_count ? cart_elem.data.place_count : '-'}} </td>
 								<td class="text-center p-3"> {{cart_elem.sale}} </td>
+								<td class="text-center p-3"> <button class="btn btn-main">Удалить</button> </td>
 							</tr>
 
 						</tbody>
@@ -296,8 +254,8 @@ include_once("header.php") ?>
 		</div>
 		<div class="modal-body">
 			<div class="row">
-				<div class="col-12">
-					<a href="success_pay.php">Оплатить</a>
+				<div class="col-12 text-center mt-3">
+				    <h4 class="w-100"><a href="success_pay.php" class="btn btn-main">Оплатить</a></h4>
 				</div>
 			</div>
 		</div>
@@ -313,8 +271,8 @@ include_once("header.php") ?>
 				</div>
 			</div>
 			<div class="col-12 mt-3 mb-3 text-center">
-					<label for="">Соглашен с условиями</label>
-					<input ng-model="whole_saler_privicy" type="checkbox" class="form-control">
+					<input ng-model="whole_saler_privicy" type="checkbox" class="form-control d-inline w-auto mr-2">
+					<label class="d-inline">Согласен с условиями</label>
 				</div>
 				<div class="col-12 mb-3 mt-3">
 					<div class="row">
@@ -388,7 +346,13 @@ include_once("header.php") ?>
     position:relative;
 }
 .md-calendar-date-disabled{
-	background: #ffc0cb;
+	background: #CB759F;
+	color:#fff;
+}
+.dis-btn{
+	background-color: #949494;
+    color: #fff;
+    border: 1px solid #949494;
 }
 </style>
 

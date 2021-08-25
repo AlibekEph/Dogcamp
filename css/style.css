@@ -79,6 +79,11 @@
   border-top-right-radius: 2px;
 }
 
+.w-checkbox span{
+    font-size:15px;
+    font-weight:500;
+}
+
 .w-checkbox-input--inputType-custom.w--redirected-checked {
   background-color: #3898ec;
   border-top-color: #3898ec;
@@ -2141,7 +2146,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-top: 77px;
+  margin-top: 30px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -2190,7 +2195,7 @@
 }
 
 .rentals-card-header {
-  padding-left: 10px;
+  padding:0 10px;
   font-family: 'Roboto Slab', sans-serif;
   font-size: 18px;
   line-height: 22px;
@@ -2334,11 +2339,6 @@
 
 .s1-rentals {
   position: relative;
-  height: 500px;
-  background-image: url("../images/cover_malinovo.png");
-  background-position: 50% 50%;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
 .s1-rentals-wrap {
@@ -2396,6 +2396,7 @@
   font-family: 'Roboto Slab', sans-serif;
   font-size: 18px;
   font-weight: 300;
+  border:1.5px solid #000;
 }
 
 .checkbox-2.w--redirected-checked {
@@ -2454,7 +2455,6 @@
 
 .content-wrap-2 {
   width: 100%;
-  margin-top: 10px;
   padding-left: 20px;
 }
 
@@ -2865,9 +2865,9 @@
     height: 400px;
   }
 
-  .s1-rentals {
-    height: 400px;
-  }
+  /*.s1-rentals {*/
+  /*  height: 400px;*/
+  /*}*/
 
   .image-6 {
     width: 200px;
@@ -2878,6 +2878,10 @@
   
   .modal-popup{
 	width:95% !important;
+  }
+  
+  .modal-body{
+      overflow-x: scroll;
   }
       
   .navbar {
@@ -3247,6 +3251,7 @@
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    flex-wrap:wrap;
     width: 100%;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
@@ -4151,7 +4156,6 @@
   }
 
   .s1-rentals {
-    height: 200px;
     background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.3))), url("../images/cover_malinovo.png");
     background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../images/cover_malinovo.png");
     background-position: 0px 0px, 50% 50%;
@@ -4315,6 +4319,14 @@
 	display: none;
 }
 
+.d-inline{
+    display:inline-block;
+}
+
+.w-auto{
+    width:auto;
+}
+
 .modal-overlay{
 	right: 0;
 	top: 0;
@@ -4366,10 +4378,17 @@
 }
 
 .modal-head button{
-	font-size: 1.5em;
-	background-color: red;
-	color: #fff;
-	border-radius: 5px;
+    font-size: 1.5em;
+    background-color: red;
+    color: #fff;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    border-radius: 5px;
+    position: fixed;
+    margin-left: -25px;
+    z-index: 9999;
+    padding:0 !important;
 }
 
 .modal-img{
@@ -4396,10 +4415,22 @@
 	font-weight: 600;
 }
 
+.modal-body table{
+    font-size:15px;
+}
+
+.modal-body table button{
+    font-size:0.7em;
+}
+
 .modal-body button:hover{
 	background-color: #fff;
 	color: #CB759F;
 	transition: .3s;
+}
+
+.house-info-modal h5{
+    font-weigth:500;
 }
 
 .btn-main{
@@ -4418,4 +4449,10 @@
 	background-color: #fff;
 	color: #CB759F;
 	transition: .3s;
+}
+
+
+.gift-row{
+    background-color:#CB759F;
+    color:#fff;
 }

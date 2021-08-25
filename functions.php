@@ -42,7 +42,7 @@ function proove_auth($re=true){
 	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	if (!isset($post)){
 		if($re){
-		header('Location:'.$protocol.$_SERVER['HTTP_HOST'].'/index.php');
+		header('Location:'.$protocol.$_SERVER['HTTP_HOST'].'/admin/login.php');
 		}else{
 			return false;
 		}

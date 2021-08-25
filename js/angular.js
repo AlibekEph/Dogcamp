@@ -126,7 +126,7 @@ class House{
 		}
 
 		get_button_text(){
-			return this.present ? 'подарок' : (this.choose ? "выбрано" : "выбрать");
+			return this.present ? 'подарок' : (this.choose ? "отменить выбор" : "выбрать");
 		}
 
 	}
@@ -139,8 +139,8 @@ class House{
 		title = "Аренда манежа";
 		class = 'playpen';
 		time_type = "0";
-		time_start_vals = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"];
-		time_end_vals = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+		time_start_vals = ["9","10","11","12","13","14","15","16","17","18","19"];
+		time_end_vals = ["10","11","12","13","14","15","16","17","18","19","20"];
 		time_start = "0";
 		time_end = "1";
 		start_date_2 = "";
@@ -149,6 +149,7 @@ class House{
 		min_date = new Date();
 		price = 0;
 		sale = 0;
+		fields_var = [{'id': '0', 'title': 'Выберите поле'}];
 		time_type_restrict = -1;
 		full_title = 'Аренда манежа';
 
@@ -159,11 +160,20 @@ class House{
 			this.time_type = time_type;
 		}
 		this.get_free_fields();
-		this.price = $scope.pricelist[this.type + "_" + this.time_type];
+		this.price = String($scope.pricelist[this.type + "_" + this.time_type]).split('.')[0].replace(/\D+/g,"");
 		}
 
 		init(ev){
 			this.elem = ev;
+		}
+		get_to_times(){
+			let res = [];
+			for (var i = 0; i < this.time_end_vals.length; i++) {
+				if(this.time_comparison(this.time_start, this.time_end_vals[i])){
+					res.push(this.time_end_vals[i]);
+				}
+			}
+			return res;
 		}
 
 		time_comparison(f,s){
@@ -180,7 +190,7 @@ class House{
 		}
 
 		update(){
-			this.price = this.get_price();
+			this.price = String(this.get_price()).split('.')[0].replace(/\D+/g,"");
 			this.full_title = this.get_title();
 			this.sale = this.get_sale();
 		}
@@ -190,9 +200,9 @@ class House{
 			//console.log(price);
 			//console.log($scope.pricelist);
 			if(this.time_type == '0'){
-				return (parseInt(this.time_end) - parseInt(this.time_start)) * price; 
+				return String((parseInt(this.time_end) - parseInt(this.time_start)) * price).split('.')[0].replace(/\D+/g,""); 
 			}else{
-				return price;
+				return String(price).split('.')[0].replace(/\D+/g,"");
 			}
 
 		}
@@ -253,8 +263,11 @@ class House{
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
 					//console.log(result);
-					tthis.fields_var = result.data;
-
+					tthis.fields_var = [{'id': '0', 'title': 'Выберите поле'}];
+					tthis.fields_var = tthis.fields_var.concat(result.data);
+					if(tthis.fields_var.length == 1){
+						tthis.fields_var = [{'id': '0', 'title': 'К сожалению в это время нет доступных полей'}];
+					}
 				});
 		}
 
@@ -272,17 +285,20 @@ class House{
 		start_date = new Date();
 		end_date = new Date(new Date().setDate(new Date().getDate() + 7));
 		min_date = new Date();
-		fields_var = [];
-		time_start_vals = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"];
-		time_end_vals = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
-		time_start = "0";
+		fields_var = [{'id': '0', 'title': 'Выберите поле'}];
+		time_start_vals = ["9","10","11","12","13","14","15","16","17","18","19"];
+		time_end_vals = ["10","11","12","13","14","15","16","17","18","19","20"];
+		time_start = "9";
 		title = "Аренда овец";
+		choosen_trainer_id = '0';
 		price = 0;
 		start_date_2 = "";
+		trainers_rents = [];
 		sale = 0;
 		time_type_restrict = -1;
-		time_end = "1";
+		time_end = "10";
 		choosen_id = '0';
+
 		constructor(buttons=true, time_type=-1){
 		this.buttons = buttons;
 		this.time_type_restrict = time_type;
@@ -295,6 +311,16 @@ class House{
 			this.elem = ev;
 			//console.log(ev);
 		}
+		get_to_times(){
+			let res = [];
+			for (var i = 0; i < this.time_end_vals.length; i++) {
+				if(this.time_comparison(this.time_start, this.time_end_vals[i])){
+					res.push(this.time_end_vals[i]);
+				}
+			}
+			return res;
+		}
+
 
 		time_comparison(f,s){
 			return parseInt(s) > parseInt(f) ? true : false; 
@@ -305,7 +331,7 @@ class House{
 				this.full = true;
 			}else{
 				scrollIntoView(this.elem[0]);
-				$scope.warning_message = "Невыбрано поле";
+				$scope.warning_message = "Не выбрано поле";
 				$scope.show_warning_message();
 			}
 		return this.full;
@@ -315,7 +341,11 @@ class House{
 			let date = this.get_user_date();
 			if(this.time_type == '0'){
 				return this.title + ' ' + date[0] + ' с '+this.time_start+':00 по '+this.time_end+':00';
-			}else{
+			}
+			else if(this.time_type == '2'){
+				return this.title + 'для занятия с тренером' + ' ' + date[0]
+			}
+			else{
 
 				return this.title + " с " + date[0] + ' по ' + date[1];
 			}
@@ -333,7 +363,8 @@ class House{
 			//console.log($scope.pricelist);
 			if(this.time_type == '0'){
 				return (parseInt(this.time_end) - parseInt(this.time_start)) * price; 
-			}else{
+			}
+			else{
 				return price;
 			}
 
@@ -392,9 +423,21 @@ class House{
 			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
 					//console.log(result);
-					tthis.fields_var = result.data;
-
+					tthis.fields_var = [{'id': '0', 'title': 'Выберите поле'}];
+					tthis.fields_var = tthis.fields_var.concat(result.data);
+					if(tthis.fields_var.length == 1){
+						tthis.fields_var = [{'id': '0', 'title': 'К сожалению в это время нет доступных полей'}];
+					}
 				});
+			this.get_trainings();
+		}
+
+		get_trainings(){
+			let date_from = formatDate(this.start_date);
+			let tthis = this;
+			$http.get('../api/services.php?move=3&date_from='+date_from+'&time_type='+this.time_type+'&time_start='+this.time_start+'&time_end='+this.time_end).then(function success(result){
+				tthis.trainers_rent = result.data;
+			});
 		}
 
 
@@ -406,38 +449,57 @@ class House{
 	class Workout{
 		full = false;
 		class = 'workout';
-		type = '2';
-		time_type = '2';
+		type = '5';
+		time_type = '0';
+		time_start = "9";
+		time_end = "10";
 		elem = [];
 		start_date = new Date();
 		min_date = new Date();
+		time_start_vals = ["9","10","11","12","13","14","15","16","17","18","19"];
+		time_end_vals = ["10","11","12","13","14","15","16","17","18","19","20"];
 		start_date_2 = "";
 		choosen_field_id = '0';
 		choosen_trainer_id = '0';
 		buttons=true;
-		title = "Тренеровка с тренером";
+		trains_var = [];
+		title = "Занятие с тренером";
 		sale = 0;
 
 		constructor(buttons=true){
 			this.buttons = buttons;
 			this.update();
-			this.get_free_fields();
+			if($scope.trainers_days_list.indexOf(formatDate(this.start_date)) == -1){
+				this.start_date = new Date($scope.trainers_days_list[0] ? $scope.trainers_days_list[0] : new Date() );
+			}
+			this.get_trainers();
+
+		}
+		get_to_times(){
+			let res = [];
+			for (var i = 0; i < this.time_end_vals.length; i++) {
+				if(this.time_comparison(this.time_start, this.time_end_vals[i])){
+					res.push(this.time_end_vals[i]);
+				}
+			}
+			return res;
 		}
 
 		init(ev){
 			this.elem = ev;
 		}
 
+		time_comparison(f,s){
+			return parseInt(s) > parseInt(f) ? true : false; 
+		}
+
 		check_full(){
-			if (this.choosen_id != '0' && this.choosen_trainer_id != '0'){
+			if (this.choosen_trainer_id != '0'){
 				this.full = true;
 			}else{
 				scrollIntoView(this.elem[0]);
 				if(this.choosen_id == '0'){
-					$scope.warning_message = "Невыбрано поле";
-				}
-				else{
-					$scope.warning_message = "Невыбран тренер";
+						$scope.warning_message = "Не выбрано занятие";
 				}
 				$scope.show_warning_message();
 			}
@@ -445,10 +507,13 @@ class House{
 		}
 		get_title(){
 			let date = this.get_user_date();
-				return this.title + ' ' + date;
+			return this.title + ' ' + date[0] + ' с '+this.time_start+':00 по '+this.time_end+':00';
 		}
 
 		update(){
+			if(this.time_end == null){
+				this.time_end = String(parseInt(this.time_start) + 1);
+			}
 			this.price = this.get_price();
 			this.full_title = this.get_title();
 			this.sale = this.get_sale();
@@ -458,7 +523,7 @@ class House{
 			let price =  parseInt($scope.pricelist[this.type + "_" + this.time_type]);
 			//console.log(price);
 			//console.log($scope.pricelist);
-			return price;
+			return (parseInt(this.time_end) - parseInt(this.time_start)) * price; 
 
 		}
 
@@ -477,25 +542,29 @@ class House{
 		get_date(){
 			//console.log(time(this.start_date));
 			let start_date = new Date(this.start_date.getTime());
-			start_date.setUTCHours(0,0,0);
-			let end_date = new Date(start_date.getTime());
-			end_date.setDate(end_date.getDate() + 1);
-			return [time(start_date), time(end_date), this];
+				start_date.setUTCHours(parseInt(this.time_start),0,0);
+				let end_date = new Date(start_date.getTime());
+				end_date.setUTCHours(parseInt(this.time_end),0,0);
+				return [time(start_date), time(end_date), this];
+
 		}	
 
-		get_free_fields(){
-			this.update();
+		get_trainers(){
 			this.full = false;
 			this.choosen_id = '0';
 			let date_from = formatDate(this.start_date);
 			this.start_date_2 = date_from;
 			let tthis = this;
-			$http.get('../api/services.php?type='+this.type+'&time_type='+this.time_type+'&date_from='+date_from).then(
+			$http.get('../api/services.php?move=3&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+this.time_start+'&time_end='+this.time_end).then(
 				function success(result) {
-					//console.log(result);
-					tthis.fields_var = result.data;
+					tthis.trains_var = [{'id':'0', 'lable': 'Выберите занятие'}];
+					for (var i = result.data.length - 1; i >= 0; i--) {
+						tthis.trains_var.push({'id': result.data[i].id, 'lable': "Занятие у "+result.data[i].fio+" на "+result.data[i].title})
+						}
 
 				});
+						this.update();
+
 		}
 	}
 
@@ -544,6 +613,7 @@ class House{
 			return price;
 
 		}
+	
 
 		get_sale(){
 			return this.sale;
@@ -570,37 +640,28 @@ class House{
 	}
 
 
-	class Subscription{
+	class SubscriptionSheep{
 		full = false;
-		class = 'subscription';
+		class = 'subscriptionsheep';
 		items_type = '';
+		type = '6';
+		dates = [];
 		count = 0;
 		sale = 0;
+		time_type = '0';
+		time_start_vals = ["9","10","11","12","13","14","15","16","17","18","19"];
 		elem = [];
+		min_date = new Date();
+		start_date = new Date();
 		items = [];
 		price = 0;
 		sale = 0;
 		title = "";
 
-		constructor(items_type, time_type, count, sale, title){
-			this.items_type = items_type;
+		constructor(count, sale, title){
 			this.count = count;
 			this.sale = sale;
 			this.title = title;
-			for (var i = count - 1; i >= 0; i--) {
-				if(items_type == '1'){
-					this.items.push(new Playpen(false, time_type));
-				}
-				if(items_type == '2'){
-					this.items.push(new Sheeps(false, time_type));
-				}
-				if(items_type == '5'){
-					this.items.push(new Workout(false));
-				}
-				if(items_type == '4'){
-					this.items.push(new Sheels(false));
-				}
-			}
 			this.update();
 		}
 
@@ -611,6 +672,24 @@ class House{
 				return this.title;
 		}
 
+		get_free_fields(date){
+				date.time_end = String(parseInt(date.time_start) + 1);
+						date.full = false;
+			date.choosen_id = '0';
+			let date_from = formatDate(date.date);
+			let tthis = date;
+			$http.get('../api/services.php?type='+date.type+'&time_type='+this.time_type+'&date_from='+date_from+'&time_start='+date.time_start+'&time_end='+date.time_end).then(
+				function success(result) {
+					console.log(result);
+					tthis.fields_var = [{'id':'0', 'title': 'Выберите поле'}];
+					tthis.fields_var = tthis.fields_var.concat(result.data);
+					if(tthis.fields_var.length == 1){
+						tthis.fields_var = [{'id':'0', 'title': 'К сожалению в это время нет доступных полей'}];
+					}
+
+				});
+		}
+
 		update(){
 			this.price = this.get_price();
 			this.full_title = this.get_title();
@@ -618,26 +697,117 @@ class House{
 		}
 
 		get_price(){
-			let res = 0;
-			for (var i = this.items.length - 1; i >= 0; i--) {
-				res += this.items[i].price;
-			}
-			return res * (parseInt(this.sale) / 100);
+			let price =  parseInt($scope.pricelist["2_" + this.time_type]);
+			return (price * this.count) * ((100 - this.sale) / 100)
 		}
 
 		get_sale(){
 			return parseInt(this.sale) + '%';
 		}
 
+		add_date(){
+			if(this.dates.length >= this.count){
+				$scope.warning_message = "Вы уже выбрали максимальное количество дат";
+				$scope.show_warning_message();
+				return 0;
+			}
+			for (var i = this.dates.length - 1; i >= 0; i--) {
+				if(this.dates[i].date == formatDate(this.start_date)){
+						$scope.warning_message = "Вы уже выбрали эту дату";
+				$scope.show_warning_message();
+
+				return 0;
+				}
+			}
+			let date = {
+				'date':formatDate(this.start_date),
+				 'time_start': '9',
+				 'time_end': '10',
+				 'choosen_id': "0",
+				 'type': '2',
+				 'fields_var': []
+			};
+			this.dates.push(date);
+			this.get_free_fields(date);
+
+			this.dates.sort(function(a,b){
+			  return new Date(a.date) - new Date(b.date);
+			});
+			console.log(this.dates);
+
+		}
+
+		del_date(date){
+			this.dates.splice(this.dates.indexOf(date), 1);
+		}
+
 		check_full(){
 			let res = true;
-			for (var i = this.items.length - 1; i >= 0; i--) {
-				if(this.items[i].check_full() == false){
+			for (var i = this.dates.length - 1; i >= 0; i--) {
+				if(this.dates[i].choosen_id == '0'){
 					res = false;
+					scrollIntoView(this.elem[0]);
+				$scope.warning_message = "Вы выбрали загоны не для всех дат";
+				$scope.show_warning_message();
 				}
+			}
+			if(this.dates.length != this.count){
+				res = false;
+				scrollIntoView(this.elem[0]);
+				$scope.warning_message = "Надо выбрать еще " + (this.count - this.dates.length) + ' дат';
+				$scope.show_warning_message();
 			}
 			this.full = res;
 			return res;
+		}
+
+	}
+
+
+	class SubscriptionWorkout{
+class = 'subscriptionworkout';
+		type = '7';
+		count = 0;
+		time_type = '0';
+		sale = 0;
+		elem = [];
+		price = 0;
+		sale = 0;
+		sub_count = 1;
+		title = "";
+
+		constructor(count, sale, title){
+			this.count = count;
+			this.sale = sale;
+			this.title = title;
+			this.sale2 = sale;
+			this.full_title = title;
+			this.update();
+		}
+		init(ev){
+			this.elem = ev;
+		}
+		get_price(){
+			let price =  parseInt($scope.pricelist["5_" + this.time_type]);
+			return (price * this.count) * ((100 - this.sale2) / 100) * this.sub_count;
+		}
+		update(){
+			this.price = this.get_price();
+			this.sale = this.get_sale();
+		}
+
+		get_sale(){
+			return parseInt(this.sale) + '%';
+		}
+		minus(){
+			if(this.sub_count >= 2){
+				this.sub_count -=1;
+				this.update();
+			}
+		}
+		plus(){
+			this.sub_count += 1;
+			this.update();
 		}
 
 	}
@@ -813,6 +983,7 @@ class House{
 	$scope.houses = [];
 	$scope.whole_saler_privicy = false;
 	$scope.dis_dates = [];
+	$scope.trainers_days_list = []
 	
 	$scope.check_houses_to_present = function(){
 		let choosen_houses = [];
@@ -830,6 +1001,7 @@ class House{
 			$scope.houses[i].update();
 		}
 		sorted_houses = sorted_houses.sort(function (a, b){
+		if (a.data.dis == 'y' && b.data.dis == 'n') return 1;
 		 if (a.data.class < b.data.class) return -1;
 	  if (a.data.class > b.data.class) return 1;
 	  // при равных score сортируем по time
@@ -854,6 +1026,13 @@ class House{
 	}
 	}
 
+	$scope.get_trainers = function(){
+		$http.get('../api/services.php?move=2').then(function success(result){
+			$scope.trainers = [{'id':'0', 'fio':'Выберите тренера'}]
+			$scope.trainers = $scope.trainers.concat(result.data);
+		});
+	}
+	$scope.get_trainers();
 	$scope.rent_all = function() {
 		if($scope.rent_all_check){
 		$scope.whole_saler = true;
@@ -873,23 +1052,24 @@ class House{
 
 
 	$scope.update = function(){
-		$scope.house_start.setUTCHours(0,0,0);
-		$scope.house_end.setUTCHours(0,0,0);
+
 		$scope.check_houses_to_present();
 	 	$scope.house_start.min_date = new Date();
 		$scope.house_end.min_date = new Date(
 			$scope.house_start.getFullYear(),
 			$scope.house_start.getMonth(),
-			 $scope.house_start.getDate() + 1
+			 $scope.house_start.getDate() + 1,0, 0, 0
 			);
 		 //console.log($scope.house_start.min_date);
 		 
 		 	//console.log('11222');
-		 	if($scope.house_start.getTime() >= $scope.house_end.getTime()){
+		 	console.log($scope.house_start.getTime())
+		 	console.log($scope.house_end.getTime())
+		 	if(new Date(formatDate($scope.house_start)) >= new Date(formatDate($scope.house_end))){
 		 	$scope.house_end =  new Date(
 			$scope.house_start.getFullYear(),
 			$scope.house_start.getMonth(),
-			 $scope.house_start.getDate() + 1
+			 $scope.house_start.getDate() + 1, 0, 0, 0
 			);
 		 }
 		 let flag2 = false;
@@ -950,7 +1130,24 @@ class House{
 					}
 				}
 				pre_mas = pre_mas.filter(element => element !== '');
+				
 				$scope.houses = pre_mas;
+				console.log(pre_mas);
+				$scope.houses = pre_mas.sort(function(a,b){
+							if (a.data.dis <= b.data.dis){
+								return 1;
+							};
+				});
+				if($scope.dis_dates.indexOf(formatDate($scope.house_start)) != -1){
+				let some_d = new Date($scope.house_start.getFullYear(),
+			$scope.house_start.getMonth(),
+			 $scope.house_start.getDate() + 1,0, 0, 0);
+								console.log(some_d);
+			 $scope.house_start = new Date(some_d);
+			 setTimeout( $scope.update, 500);
+						 return 0;
+				}
+			
 				setTimeout(function(){
 					document.querySelector('#ftco-loader-update').classList.remove('show');
 				}, 1000)
@@ -1074,8 +1271,13 @@ class House{
 			return [year, month, day].join('-');
 		}
 
-
-
+		$scope.trainers_days = function(){
+			$http.get('../api/services.php?move=4').then(function success(result){
+			$scope.trainers_days_list = result.data;
+			console.log(result);
+			});
+		}
+		$scope.trainers_days();
 		$scope.change_btn = function(house) {
 			house.toggle_house();
 			$scope.update();
@@ -1124,6 +1326,15 @@ class House{
 				$scope.open_cart();
 			}
 		}
+
+
+		$scope.OnlyTrainersDays = function(date){
+			if($scope.trainers_days_list.indexOf(formatDate(date)) == -1){
+				return false;
+			} 
+			return true;
+		}
+
 		$scope.onlyWeekendsPredicate = function(date) {
 			//console.log(date)
 			let fdate = formatDate(date);
@@ -1189,7 +1400,11 @@ class House{
 			}
 			for (var i = 0; i < $scope.subscription.length; i++){
 				if($scope.subscription[i].check){
-					elems.push(new Subscription($scope.subscription[i].service_type, $scope.subscription[i].time_type, $scope.subscription[i].count, $scope.subscription[i].sale, $scope.subscription[i].title));
+					if($scope.subscription[i].service_type == '6'){
+					elems.push(new SubscriptionSheep($scope.subscription[i].count, $scope.subscription[i].sale, $scope.subscription[i].title));
+				}else{
+					elems.push(new SubscriptionWorkout($scope.subscription[i].count, $scope.subscription[i].sale, $scope.subscription[i].title));
+								}
 				}
 			}
 			//console.log($scope.houses);
@@ -1201,6 +1416,7 @@ class House{
 			$scope.cart = new Cart(elems);
 			//console.log($scope.cart);
 		}
+
 
 		$scope.del_elem_form_cart = function(elem) {
 			//console.log($scope.cart.items.indexOf(elem));
@@ -1237,11 +1453,6 @@ rentals.filter('sumColumn', function(){
         	            let sum = 0;
 
         	try {
-
-  // код ...
-
-
-
             for(let i = 0; i < dataSet.length; i++){
                 sum += parseFloat(dataSet[i][columnToSum]) || 0;
             }

@@ -1,0 +1,19 @@
+<div class="col-12 mb-3 mt-3">
+	<h4>Абонемет на занятия с тренером</h4>
+</div>
+<div class="col-12 mb-3 mt-3 text-center">
+    <h5>Сколько абонементов вы хотите купить: <b>{{cart_elem.sub_count}}</b></h5>
+</div>
+<div class="col-6 mb-3 mt-3 text-center">
+    <button ng-click="cart_elem.plus()" class="btn btn-main w-100">+</button>
+</div>
+<div class="col-6 mb-3 mt-3 text-center">
+    <button ng-click="cart_elem.minus()" class="btn btn-main w-100">-</button>
+</div>
+
+
+<div class="col-12 mt-4 mb-4">
+	<button ng-click="del_elem_form_cart(cart_elem)" class="w-100 btn">Удалить услугу</button>
+</div>
+
+<hr>

@@ -9,6 +9,7 @@ class House{
 	public $photo = array();
 	public $description;
 	public $keywords;
+	public $dis;
 	public $camp_name;
 	public $class_name;
 	public $desc_seo;
@@ -72,6 +73,10 @@ class House{
 			$sql2 = $this->db->query($sql2);
 			$this->photo = mysqli_fetch_all($sql2, MYSQLI_BOTH);
 		$this->db->close();
+	}
+
+	public function set_dis($dis){
+		$this->dis = $dis;
 	}
 
 }

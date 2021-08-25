@@ -1,0 +1,68 @@
+
+				<div class="col-12 mb-3 mt-3">
+					<h4>Абонемент на аренду овец</h4>
+				</div>
+			
+				<div class="col-md-12 col-12 mt-3 mb-3">
+					<label for="">Дата</label>
+					<md-datepicker ng-model="cart_elem.start_date" class="form-control w-100"  md-min-date="cart_elem.min_date" md-placeholder="Enter date"
+                     input-aria-describedby="datepicker-description"
+                     input-aria-labelledby="datepicker-header "></md-datepicker>
+					 
+				</div>
+				<div class="col-12 mt-3 mb-3">
+				    <button class="w-100" ng-click="cart_elem.add_date()">Добавить дату</button>
+				</div>
+				
+				<div ng-if="cart_elem.dates.length != 0" class="col-12 mt-4">
+				    <table class="table w-100" border="1">
+						<thead>
+							<tr>
+								<th scope="col">Дата</th>
+								<th scope="col">Время ОТ и ДО</th>
+								<th scope="col">Поле</th>
+								<th scope="col">Удлить</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="date in cart_elem.dates">
+								<td scope="row" class="text-center p-3"><div>{{date.date}}</div></td>
+								<td class="p-3">
+								   <select class="form-control mb-2" ng-model="date.time_start" ng-change="cart_elem.get_free_fields(date)" ng-options="timee as timee+':00' for timee in cart_elem.time_start_vals">
+    				                </select> ДО {{(date.time_end)}}:00
+								</td>
+								<td class="text-center p-3">
+								    <select ng-model="date.choosen_id" ng-class="date.choosen_id == '0' ? 'select-attention' : ''" class="form-control w-100" ng-options="field.id as field.title for field in date.fields_var">
+    						            
+    					            </select>    
+								</td>
+								<td class="text-center p-3"><div><button ng-click="cart_elem.del_date(date)" class="btn close-popup" type="button">&times;</button></div></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+                
+				<!--<div class="col-md-4" ng-repeat="date in cart_elem.dates"> {{date.date}} <button class="btn close-popup" type="button">&times;</button></div>-->
+				<!--<div ng-repeat="date in cart_elem.dates">-->
+    <!--				<div  class="col-4 mt-4 mb-4">-->
+    <!--					<label for="from">Время: </label>-->
+    <!--				  <select class="form-control" ng-model="cart_elem.time_start" ng-change="cart_elem.get_free_fields()">-->
+    <!--				    <option ng-repeat="timee in cart_elem.time_start_vals" value="{{timee}}">{{timee}}:00</option>-->
+    <!--				  </select>-->
+    <!--				</div>-->
+    <!--				<div class="col-4 mt-3 mb-3">-->
+    <!--					<label for="">Поле:</label>-->
+    <!--					<select ng-model="cart_elem.choosen_id" ng-change="cart_elem.check_full()" ng-class="cart_elem.choosen_id == '0' ? 'select-attention' : ''" class="form-control w-100">-->
+    <!--						<option ng-if="cart_elem.fields_var.length != 0" value="0">Выберите поле</option>-->
+    <!--						<option ng-if="cart_elem.fields_var.length == 0" value="0">К сожалению в это время нет доступных полей</option>-->
+    <!--						<option ng-repeat="field in cart_elem.fields_var" value="{{field.id}}">{{field.title}}</option>-->
+    <!--					</select>-->
+    <!--				</div>-->
+    <!--				</div>-->
+				
+			 <!--   </div>-->
+				<div ng-if="cart_elem.buttons" class="col-12 mt-4 mb-4">
+					<button ng-click="del_elem_form_cart(cart_elem)" class="w-100 btn">Удалить услугу</button>
+				</div>
+				<hr>	

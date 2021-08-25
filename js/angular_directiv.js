@@ -46,12 +46,44 @@ rentals.directive("subscription", function($compile) {
     		}
 	};
 });
+rentals.directive("subscriptionsheep", function($compile) {
+	return {
+		restrict: "C",
+		scope: true,
+		templateUrl: "templates/subscription_sheep.html",
+		controller: function ( $scope, $element ) {
+	      $scope.add = function () {
+	        var el = $compile( "<subscriptionsheep text='n'></subscriptionsheep>" )( $scope );
+	        $element.parent().append( el );
+	      };
+    	},
+    	link: function(scope, elm, attrs) {
+     		 scope.cart_elem.init(elm);
+    		}
+	};
+});
+rentals.directive("subscriptionworkout", function($compile) {
+	return {
+		restrict: "C",
+		scope: true,
+		templateUrl: "templates/subscription_workout.html",
+		controller: function ( $scope, $element ) {
+	      $scope.add = function () {
+	        var el = $compile( "<subscriptionworkout text='n'></subscriptionworkout>" )( $scope );
+	        $element.parent().append( el );
+	      };
+    	},
+    	link: function(scope, elm, attrs) {
+     		 scope.cart_elem.init(elm);
+    		}
+	};
+});
 rentals.directive("workout", function($compile) {
 	return {
 		restrict: "C",
 		scope:true,
 		
-		templateUrl: "templates/workout.php",
+		templateUrl: "templates/workout.html",
 		controller: function ( $scope, $element ) {
 	      $scope.add = function () {
 	        var el = $compile( "<workout text='n'></workout>" )( $scope );
