@@ -1,11 +1,18 @@
-	<?php 
+<?php 
+	include($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
+	if(isset($_GET['move'])){
+		if($_GET['move'] == 'email'){
+			$notif = new Notifications();
+			$notif->send_contact_email($_POST['email'], $_POST['name'], $_POST['city'], $_POST['text']);
+		}
+	}
 	$title = "Контакты";
 	include_once("header.php") ?>
 		<div class="s1-contacts">
 			<div class="container w-container">
 				<div class="s1-wrap">
 					<div class="menu-block-riding-hall"><a href="/" class="menu-link">Горыныч</a><a href="/school.php" class="menu-link">Школа</a><a href="/malinovo.php" class="menu-link">Малиново</a><a href="/riding-hall.php" class="menu-link">Манеж</a><a href="/rentals.php" class="menu-link">аренда<br></a><a href="/shares.php" class="menu-link">Акции</a><a href="/photo.php" class="menu-link">фото</a><a href="/contacts.php" aria-current="page" class="menu-link w--current">Контакты</a></div>
-					<div class="offers-wrap"><a href="/rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">Аренда домика</div><img src="images/Group20(2).png" loading="lazy" alt="" class="vektor-1"></a><a href="#" class="offers-link-block w-inline-block"><div class="offers-desc">запись на пастьбу</div><img src="images/Group20(3).png" loading="lazy" alt="" class="vektor-2"></a><a href="/shares.php" class="offers-link-block w-inline-block"><div class="offers-desc">наши акции</div><img src="images/gift201.png" loading="lazy" alt="" class="vektor-3"></a></div>
+					<div class="offers-wrap"><a href="/rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">Аренда домика</div><img src="images/Group20(2).png" loading="lazy" alt="" class="vektor-1"></a><a href="rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">запись на пастьбу</div><img src="images/Group20(3).png" loading="lazy" alt="" class="vektor-2"></a><a href="/shares.php" class="offers-link-block w-inline-block"><div class="offers-desc">наши акции</div><img src="images/gift201.png" loading="lazy" alt="" class="vektor-3"></a></div>
 				</div>
 			</div>
 		</div>
@@ -22,7 +29,7 @@
 							<div class="mail-contact-block"><img src="images/Vector-1.png" loading="lazy" alt="" class="mail-img"><a href="mailto:gorynychclub@gmail.com" class="mail-link-contacts">gorynychclub@gmail.com<br></a></div>
 							<div class="contacts-sep"></div>
 							<div class="subtitle">МЫ В СОЦСЕТЯХ</div>
-							<div class="social-network-contact">Мы в <a href="https://www.facebook.com/%D0%90%D0%B3%D1%80%D0%BE%D1%82%D1%83%D1%80%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81-%D0%93%D0%BE%D1%80%D1%8B%D0%BD%D1%8B%D1%87-490027857716228" target="_blank" class="social-network-contact-link">Facebook</a></div>
+							<div class="social-network-contact">Мы в <a href="https://www.facebook.com/atk.gorynych" target="_blank" class="social-network-contact-link">Facebook</a></div>
 							<div class="social-network-contact">Мы в <a href="https://vk.com/gorinytch" target="_blank" class="social-network-contact-link">ВКонтакте</a></div>
 							<div class="social-network-contact">Мы в <a href="https://www.instagram.com/gorinich_atk/" target="_blank" class="social-network-contact-link">Инстаграм</a></div>
 						</div>
@@ -35,9 +42,9 @@
 		<div class="s3-contacts">
 			<div class="container w-container">
 				<div class="form-block w-form">
-					<form id="email-form" name="email-form" data-name="Email Form">
-						<div class="header-form wite">Написать нам сообщение</div><input type="text" class="name w-input" maxlength="256" data-name="Имя" placeholder="Имя" id="node-4"><input type="email" class="e-mail w-input" maxlength="256" name="E-mail" data-name="E-mail" placeholder="E-mail" id="E-mail" required=""><input type="text" class="city w-input" maxlength="256" data-name="Город" placeholder="Город" id="node-2" required=""><input type="text" class="your-message w-input" maxlength="256" data-name="Ваше сообщение" placeholder="Ваше сообщение" id="node" required="">
-						<div class="w-form-formrecaptcha recaptcha g-recaptcha g-recaptcha-error g-recaptcha-disabled g-recaptcha-invalid-key"></div><input type="submit" value="отправить" data-wait="Пожалуйста подождите..." class="submit-button w-button"></form>
+					<form action="?move=email" method="POST" id="email-form" name="email-form" data-name="Email Form" action="/">
+						<div class="header-form wite">Написать нам сообщение</div><input type="text" name="name" class="name w-input" maxlength="256" data-name="Имя" placeholder="Имя" id="node-4"><input type="email"  class="e-mail w-input" maxlength="256" name="email" data-name="E-mail" placeholder="E-mail" id="E-mail" required=""><input type="text" name="city" class="city w-input" maxlength="256" data-name="Город" placeholder="Город" id="node-2" required=""><input type="text" name="text" class="your-message w-input" maxlength="256" data-name="Ваше сообщение" placeholder="Ваше сообщение" id="node" required="">
+						<div class="w-form-formrecaptcha recaptcha g-recaptcha g-recaptcha-error g-recaptcha-disabled g-recaptcha-invalid-key"></div><input type="submit" value="Отправить" data-wait="Пожалуйста подождите..." class="submit-button w-button"></form>
 					<div class="w-form-done">
 						<div>Thank you! Your submission has been received!</div>
 					</div>

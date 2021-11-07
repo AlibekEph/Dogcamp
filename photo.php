@@ -5,7 +5,7 @@ include_once("header.php") ?>
 			<div class="container w-container">
 				<div class="s1-photo-wrap">
 					<div class="menu-block-riding-hall"><a href="/" class="menu-link">Горыныч</a><a href="/school.php" class="menu-link">Школа</a><a href="/malinovo.php" class="menu-link">Малиново</a><a href="/riding-hall.php" class="menu-link">Манеж</a><a href="/rentals.php" class="menu-link">аренда<br></a><a href="/shares.php" class="menu-link">Акции</a><a href="/photo.php" aria-current="page" class="menu-link w--current">фото</a><a href="/contacts.php" class="menu-link">Контакты</a></div>
-					<div class="offers-wrap"><a href="/rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">Аренда домика</div><img src="images/Group20(2).png" loading="lazy" alt="" class="vektor-1"></a><a href="#" class="offers-link-block w-inline-block"><div class="offers-desc">запись на пастьбу</div><img src="images/Group20(3).png" loading="lazy" alt="" class="vektor-2"></a><a href="/shares.php" class="offers-link-block w-inline-block"><div class="offers-desc">наши акции</div><img src="images/gift201.png" loading="lazy" alt="" class="vektor-3"></a></div>
+					<div class="offers-wrap"><a href="/rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">Аренда домика</div><img src="images/Group20(2).png" loading="lazy" alt="" class="vektor-1"></a><a href="rentals.php" class="offers-link-block w-inline-block"><div class="offers-desc">запись на пастьбу</div><img src="images/Group20(3).png" loading="lazy" alt="" class="vektor-2"></a><a href="/shares.php" class="offers-link-block w-inline-block"><div class="offers-desc">наши акции</div><img src="images/gift201.png" loading="lazy" alt="" class="vektor-3"></a></div>
 				</div>
 			</div>
 		</div>

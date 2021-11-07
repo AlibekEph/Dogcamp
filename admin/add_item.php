@@ -156,7 +156,7 @@ include_once("header.php") ;
                   <textarea name="desc_seo" class="form-control" cols="30" rows="10"></textarea>
                 </div>
                 <div class="col-12 mb-3">
-                <button type="submit" class="btn btn-block btn-success btn-lg" name="add_button">Добавить товар</button>
+                <button type="submit" class="btn btn-block btn-success btn-lg" name="add_button">Добавить домик</button>
               </div>
 
 

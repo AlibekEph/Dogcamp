@@ -7,7 +7,7 @@ $houses_count = $db->query($houses_count);
 $houses_count = mysqli_fetch_all($houses_count, MYSQLI_BOTH);
 $houses_count = count($houses_count);
 //Поиск аренд домов, которые заканчиваются позднее сегодняшнего дня
-$orders = "SELECT * FROM `house_to_orders` WHERE `to_order` > CURRENT_DATE";
+$orders = "SELECT hto.id as id, hto.order_id as order_id, hto.house_id as house_id, hto.from_order as from_order, hto.to_order as to_order, hto.coast as coast, hto.sale as sale FROM `house_to_orders` as hto  INNER JOIN orders as mo ON hto.order_id = mo.id where mo.status not in (4,5,6,7) AND hto.`to_order` > CURRENT_DATE";
 $orders = $db->query($orders);
 $orders = mysqli_fetch_all($orders, MYSQLI_BOTH);
 

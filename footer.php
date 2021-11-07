@@ -3,11 +3,11 @@
 				<div class="footer-wrap">
 					<div class="_40-footer-block">
 						<div class="footer-text-1">© 2021 Агро-туристический комплекс "ГОРЫНЫЧ". Все права защищены.</div>
-						<div class="footer-text-2">© 2021, Все права защищены</div><a href="#" class="footer-link-2">Пользовательское соглашение</a><a href="#" class="footer-link-1">Политика конфиденциальности</a></div>
+						<div class="footer-text-2">© 2021, Все права защищены</div><a href="conditions.php" class="footer-link-2">Пользовательское соглашение</a><a href="policy.php" class="footer-link-1">Политика конфиденциальности</a></div>
 					<div class="_60-footer-block">
 						<div class="footer-info-wrap"><a href="#" class="footer-info-block-map w-inline-block"><img src="images/Vector-11.png" loading="lazy" alt="" class="footer-met"><div>село Махра, Владимирская обл.</div></a><a href="tel:+7(904)599-57-82" class="footer-info-block-phone w-inline-block"><img src="images/Vector-10.png" loading="lazy" alt="" class="footer-phone"><div>+7 (904) 599-57-82</div></a></div>
 						<div class="footer-menu"><a href="/" aria-current="page" class="footer-menu-link w--current">горыныч</a><a href="/malinovo.php" class="footer-menu-link">Малиново</a><a href="/school.php" class="footer-menu-link">Школа</a><a href="/rentals.php" class="footer-menu-link">Аренда</a><a href="/riding-hall.php" class="footer-menu-link">Манеж</a><a href="/shares.php" class="footer-menu-link">Акции</a><a href="/photo.php" class="footer-menu-link">фотогалерея</a><a href="/contacts.php" class="footer-menu-link">Контакты</a></div>
-						<div class="footer-social-network"><a href="#" class="footer-social-networks-link w-inline-block"><img src="images/vk201.png" loading="lazy" alt="" class="footer-social-network-img"></a><a href="#" class="footer-social-networks-link w-inline-block"><img src="images/instagram201.png" loading="lazy" alt="" class="footer-social-network-img"></a><a href="#" class="footer-social-networks-link w-inline-block"><img src="images/youtube201.png" loading="lazy" alt="" class="footer-social-network-img"></a></div>
+						<div class="footer-social-network"><a href="https://vk.com/gorinytch" class="footer-social-networks-link w-inline-block"><img src="images/vk201.png" loading="lazy" alt="" class="footer-social-network-img"></a><a href="https://www.instagram.com/gorinich_atk/" class="footer-social-networks-link w-inline-block"><img src="images/instagram201.png" loading="lazy" alt="" class="footer-social-network-img"></a><a href="#" class="footer-social-networks-link w-inline-block"><img src="images/youtube201.png" loading="lazy" alt="" class="footer-social-network-img"></a></div>
 					</div>
 				</div>
 			</div>
@@ -18,6 +18,13 @@
 		<script src="js/script.js?ver=1626191658" type="text/javascript"></script>
 		<script src="js/main.js" type="text/javascript"></script>
 		<script src="js/datepicker.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js" type="text/javascript"></script>
+        <script>
+            if(document.querySelector("#tel")){
+                $("#tel").mask("+7 (999) 999-99-99");
+            }
+        </script>
 		<script src="https://www.google.com/recaptcha/api.js"></script>
 		<!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
 		<!-- FOOTER CODE -->

@@ -4,7 +4,7 @@ proove_auth();
 if(isset($_GET['move'])){
 
 if($_GET['move'] == 'del'){
-  del_order($_GET['id']);
+  del_service($_GET['id']);
 }
 }
 
@@ -54,7 +54,8 @@ include_once("header.php") ?>
                     <td><?=$ser['title']?></td>      
                     <td>
                       <div class="row">
-                        <div class="col-4 text-center"><a href="service.php?id=<?=$ser['id']?>" class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><a href="service_stat.php?id=<?=$ser['id']?>" class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><a href="services.php?move=del&id=<?=$ser['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
                       </div>
                     </td>
                   </tr>

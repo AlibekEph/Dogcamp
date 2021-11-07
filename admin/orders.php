@@ -6,27 +6,18 @@ if(isset($_GET['move'])){
 if($_GET['move'] == 'del'){
   del_order($_GET['id']);
 }
+if($_GET['move'] == 'edit'){
+  change_order($_POST['status'], $_POST['id']);
 }
-
+}
+$title = "Таблица заказов";
 include_once("header.php") ?>
 
 
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper ml-0">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Таблица заказов</h1>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section ng-app="orders" ng-controller="ordersCtrl" class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -36,15 +27,17 @@ include_once("header.php") ?>
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>id Заказа</th>
-                    <th>ФИ заказчика</th>
-                    <th>Email</th>
-                    <th>Телефон</th>
-                    <th>Стоимость</th>
-                    <th>Количество человек</th>
-                    <th>Дата</th>
-                    <th>Оптовик</th>
-                    <th>Действия</th>
+                    <th>ID</th>
+                    <th>ФИО заказчика</th>
+                    <th>Тел. заказчика</th>
+                    <th>Кол-во человек</th>
+                    <th>Email заказчика</th>
+                    <th>Стоимость заказа</th>
+                    <th>Дата оформления</th>
+                    <th>Отметки о согласии</th>
+                    <th>Тип заказа</th>
+                    <th>Статус заказа</th>
+                    <th>Управление</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -54,21 +47,24 @@ include_once("header.php") ?>
                   <tr>
                     <td><?=$order['id']?></td>
                     <td><?=$order['surname']." ".$order['name']?></td>
-                    <td><?=$order['email']?></td>
                     <td><?=$order['phone']?></td>
-                    <td><?=$order['coast']?></td>
                     <td><?=$order['person_count']?></td>
+                    <td><?=$order['email']?></td>
+                    <td><?=$order['coast']?></td>
                     <td><?=$order['date']?></td>
-                    <td><?=$order['id']?></td> 
-                    <td><?=$order['is_wholesaler'] ? 'Да' : 'Нет'?></td>                   
+                    <td>Все</td>
+                    <td><?=$order['is_wholesaler'] ? 'Оптовик' : 'Розничный'?></td>
+                    <td><?=$order['status']?></td>
                     <td>
                       <div class="row">
+                        <div class="col-4 text-center"><a href="order.php?id=<?=$order['id']?>" class="btn"><i class="fas fa-eye"></i></a></div>
                         <div class="col-4 text-center"><a href="orders.php?move=del&id=<?=$order['id']?>" class="btn"><i class="fas fa-trash-alt"></i></a></div>
-                        <div class="col-4 text-center"><a href="order.php?id=<?=$order['id']?>" class="btn"><i class="fas fa-eye"></i></button></div>
+                        <div class="col-4 text-center"><i ng-click="open_change_status(<?=$order['id']?>)" class="fas fa-edit"></i></div>
                       </div>
                     </td>
+
                   </tr>
-                <?php } ?>
+                  <?php } ?>
                   </tbody>
 
                 </table>
@@ -82,9 +78,30 @@ include_once("header.php") ?>
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
+      <div class="modal fade " id="modal-info" style="padding-right: 16px; display: block;width: 0;height: 0;" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content bg-info">
+        <div class="modal-header">
+          <h4 class="modal-title">Изменение статуса заказа</h4>
+          <button ng-click="close_change_status()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="?move=edit" method="POST">
+            <input type="hidden" name="id" value="{{now_id}}">
+          <select class="form-control" ng-model="now" name="status" id="" ng-options="status.id as status.title for status in all">
+          </select>
+          <button class="btn btn-block btn-lg btn-success mt-4" type="submit">Изменить</button>
+        </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
     </section>
     <!-- /.content -->
-  </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer text-center ml-0">
     <div class="d-sm-block pt-4 pb-4">
@@ -94,6 +111,7 @@ include_once("header.php") ?>
 
   <!-- /.control-sidebar -->
 </div>
+
 <!-- ./wrapper -->
 
 <!-- jQuery -->
@@ -117,9 +135,13 @@ include_once("header.php") ?>
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+  <script src="../js/bower_components/angular/angular.js"></script>
+
+<script type="text/javascript" src="dist/js/orders.js"></script>
 <!-- Page specific script -->
 <script>
-  $(function () {
+  console.log($('#example2'));
+ $(function () {
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]

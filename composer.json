@@ -1,0 +1,13 @@
+{
+    "name": "lyukd/dogcamp.local",
+    "autoload": {
+        "psr-4": {
+            "Lyukd\\DogcampLocal\\": "src/"
+        }
+    },
+    "require": {
+        "voronkovich/sberbank-acquiring-client": "^2.7",
+        "telegram-bot/api": "^2.3",
+        "irazasyed/telegram-bot-sdk": "2.0"
+    }
+}

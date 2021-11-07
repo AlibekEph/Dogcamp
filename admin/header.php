@@ -8,49 +8,55 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light ml-0">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-    </ul>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-
-      <li class="nav-item">
-        <a href="../index.php" class="nav-link">Сайт</a>
-      </li>
-
-      <li class="nav-item">
-        <a href="index.php" class="nav-link">Дома</a>
-      </li>
-
-      <li class="nav-item">
-        <a href="add_item.php" class="nav-link">Добавить дом</a>
-      </li>
-       <li class="nav-item">
-        <a href="orders.php" class="nav-link">Заказы</a>
-      </li>
-      <li class="nav-item">
-        <a href="services.php" class="nav-link">Сервисы</a>
-      </li>
-       <li class="nav-item">
-        <a  href="subscriptions.php" class="nav-link">Абонементы</a>
-      </li>
-
-
-
-
-    </ul>
-  </nav>
+  
   <!-- /.navbar -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper ml-0">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><?php if(isset($title)){echo $title;} else {echo "Админ-панель";} ?></h1>
+          </div>
+        </div>
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/orders/orders.php" class="btn btn-primary w-100">Управление заказами</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/houses/houses.php" class="btn btn-primary w-100">Настройки домиков</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/services/services.php" class="btn btn-primary w-100">Настройки услуг</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/textolite" class="btn btn-primary w-100">Настройки страниц</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/trainings/peoples.php" class="btn btn-primary w-100">Настройки уведомлений</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/trainings/trainings.php" class="btn btn-primary w-100">Управление тренировками</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>/admin/settings/settings.php" class="btn btn-primary w-100">Прочие настройки</a>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-6 col-12 text-center mt-3 mb-3">
+            <a href="<?=PROTOCOL?>://<?=DOMAIN?>" class="btn btn-primary w-100">Перейти на сайт</a>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>

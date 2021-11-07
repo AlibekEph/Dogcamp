@@ -21,7 +21,7 @@ if($classes == array('')){
 $class_sql = '1';
 }
 
-$sql = "SELECT id as id, IF((SELECT COUNT(*) from house_to_orders as o where o.house_id = h.id AND CHECK_DATE('".$_GET['date_from']."','".$_GET['date_to']."', o.from_order, o.to_order)) = 0, 'y', 'n') as dis_house  FROM houses as h WHERE ".$class_sql." AND ".$camp_sql. " ";
+$sql = "SELECT id as id, IF((SELECT COUNT(*) from house_to_orders as o INNER JOIN orders as mo ON o.order_id = mo.id where mo.status not in (4,5,6,7) AND o.house_id = h.id AND CHECK_DATE('".$_GET['date_from']."','".$_GET['date_to']."', o.from_order, o.to_order)) = 0, 'y', 'n') as dis_house  FROM houses as h  WHERE ".$class_sql." AND ".$camp_sql. " ORDER BY h.kamp DESC, h.id DESC";
 $db = new Database();
 $db->getConnection();
 $houses_count = "SELECT id FROM houses as h WHERE ".$class_sql." AND ".$camp_sql;
@@ -34,7 +34,7 @@ foreach ($res as $id) {
 	array_push($result, new House($id['id'], true));
 	$result[array_key_last($result)]->set_dis($id['dis_house']);
 }
-$orders = "SELECT o.house_id as house_id, o.from_order as from_order, o.to_order as to_order FROM `house_to_orders` as o INNER JOIN houses as h ON o.house_id = h.id WHERE o.`to_order` > CURRENT_DATE AND ".$class_sql." AND ".$camp_sql;
+$orders = "SELECT o.house_id as house_id, o.from_order as from_order, o.to_order as to_order FROM `house_to_orders` as o INNER JOIN houses as h ON o.house_id = h.id INNER JOIN orders as mo ON o.order_id = mo.id where mo.status not in (4,5,6,7) AND o.`to_order` > CURRENT_DATE AND ".$class_sql." AND ".$camp_sql;
 $orders = $db->query($orders);
 $orders = mysqli_fetch_all($orders, MYSQLI_BOTH);
 $result_dates = array();

@@ -1,8 +1,10 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
 proove_auth();
+$title = "Состав заказа";
 include_once("header.php") ?>
 
+<
  <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -22,8 +24,10 @@ include_once("header.php") ?>
                   </tr>
                   </thead>
                   <tbody>
-                    <?php 
+                    <?php
+                    $sum = 0; 
                     foreach (get_items_to_order($_GET['id']) as $item) {
+                      $sum += $item['coast'];
                        ?>
                   <tr>
                     <td><?=$item['type']?></td>
@@ -32,8 +36,16 @@ include_once("header.php") ?>
                     <td><?=$item['date_end']?></td>
                     <td><?=$item['coast']?></td>
                     <td><?=$item['sale']?></td>
-
+                  </tr>
                 <?php } ?>
+                <tr>
+                    <td>Итог</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><?=$sum?></td>
+                    <td></td>
+                  </tr>
                   </tbody>
 
                 </table>

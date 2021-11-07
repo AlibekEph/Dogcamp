@@ -27,6 +27,7 @@
 		<script type="text/javascript">WebFont.load({  google: {    families: ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic","Ubuntu:300,300italic,400,400italic,500,500italic,700,700italic","Roboto:300,300italic,regular,italic,700,700italic:cyrillic,latin","Roboto Slab:300,regular,500,700,900:cyrillic,latin","IBM Plex Sans:300,300italic,regular,italic,500,500italic,600,600italic,700,700italic:cyrillic,latin"]  }});</script>
 		<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif]-->
 		<script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+<script src="//code-ya.jivosite.com/widget/h7jlQK0TVO" async></script>
 	</head>
 	<body class="body">
 		<div class="mobail-header">
@@ -43,6 +44,6 @@
 						<div class="phone-block"><img src="images/Vector.png" loading="lazy" alt="" class="phone-img"><a href="tel:+7(904)599-57-82" class="mail-link">+7 (904) 599-57-82<br></a></div>
 						<div class="mail-block"><img src="images/Vector-1.png" loading="lazy" alt="" class="mail-img"><a href="mailto:gorynychclub@gmail.com" class="mail-link">gorynychclub@gmail.com<br></a></div>
 					</nav>
-					<div class="nav-social-networks"><a href="#" class="social-networks-link w-inline-block"><img src="images/Vector-3.png" loading="lazy" alt="" class="fb-img"></a><a href="#" class="social-networks-link w-inline-block"><img src="images/Vector-4.png" loading="lazy" alt="" class="vk-img"></a><a href="#" class="social-networks-link w-inline-block"><img src="images/Vector-5.png" loading="lazy" alt="" class="in-img"></a><a href="#" class="social-networks-link w-inline-block"><img src="images/Vector-2.png" loading="lazy" alt="" class="wp-img"></a></div><a href="https://dogcamping.ru/rentals.php" class="button w-button">Забронировать</a></div>
+					<div class="nav-social-networks"><a href="https://www.facebook.com/atk.gorynych" class="social-networks-link w-inline-block"><img src="images/Vector-3.png" loading="lazy" alt="" class="fb-img"></a><a href="https://vk.com/gorinytch" class="social-networks-link w-inline-block"><img src="images/Vector-4.png" loading="lazy" alt="" class="vk-img"></a><a href="https://www.instagram.com/gorinich_atk/" class="social-networks-link w-inline-block"><img src="images/Vector-5.png" loading="lazy" alt="" class="in-img"></a></div><a href="https://dogcamping.ru/rentals.php" class="button w-button">Забронировать</a></div>
 			</div>
 		</div>

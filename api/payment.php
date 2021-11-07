@@ -1,5 +1,26 @@
 <?php 
 include($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
+function sortByClass($house1, $house2){
+if($house1->class_id > $house2->class_id){
+	return 1;
+}
+if($house1->class_id < $house2->class_id){
+	return -1;
+}
+if($house1->get_coast() < $house2->get_coast()){
+	return 1;
+}
+if($house1->get_coast() > $house2->get_coast()){
+	return -1;
+}
+if((Int)$house1->id > (Int)$house2->id){
+	return -1;
+}
+if((Int)$house1->id < (Int)$house2->id){
+	return 1;
+}
+}
 $db = new Database();
 $link = $db->getConnection();
 $cart = json_decode($_POST['cart'], true);
@@ -8,15 +29,17 @@ $user = json_decode($_POST['user'], true);
 	$fi = explode(' ', $user['name']);
 	$surname = $fi[0];
 	$name = $fi[1];
+	$patronymic = $fi[2];
 	$email = $user['email'];
 	$phone = $user['phone'];
+	$tg = $user['tg'];
 	$send_not = $user['sending_notifications'];
 	$is_wholesaler = $user['is_wholesaler'];
-	$sql = "SELECT * FROM clients WHERE (name = '".$name."' AND surname = '".$surname."') OR email = '".$email."' ";
+	$sql = "SELECT * FROM clients WHERE (name = '".$name."' AND surname = '".$surname."' AND patronymic = '".$patronymic."') AND email = '".$email."' AND tg_username = '".$tg."' AND phone = '".$phone."' ";
 	$sql = $db->query($sql);
 	$sql = mysqli_fetch_all($sql, MYSQLI_BOTH);
 	if(count($sql) == 0){
-		$sql = "INSERT INTO `clients` (`id`, `name`, `surname`, `email`, `phone`, `is_wholesaler`, `terms_of_the_privacy_policy`, `promotions_and_so_on`) VALUES (NULL, '".$name."', '".$surname."', '".$email."', '".$phone."', '".$is_wholesaler."', '1', '".$send_not."')";
+		$sql = "INSERT INTO `clients` (`id`, `name`, `surname`, `patronymic`, `email`, `phone`, `is_wholesaler`, `terms_of_the_privacy_policy`, `promotions_and_so_on`, `tg_username`) VALUES (NULL, '".$name."', '".$surname."', '".$patronymic."','".$email."', '".$phone."', '".$is_wholesaler."', '1', '".$send_not."', '".$tg."')";
 		$db->query($sql);
 		$last_id = 'SELECT MAX(`id`) FROM `clients`';
 		$last_id = $db->query($last_id);
@@ -25,7 +48,7 @@ $user = json_decode($_POST['user'], true);
 		$client_id = $sql[0]['id'];
 	}
 //подсчет стоимости
-	$pricelist = "SELECT * FROM pricelist";
+	/*$pricelist = "SELECT * FROM pricelist";
 	$pricelist = $db->query($pricelist);
 	$pricelist = mysqli_fetch_all($pricelist, MYSQLI_BOTH);
 	for ($i=0; $i < count($pricelist); $i++) { 
@@ -34,168 +57,133 @@ $user = json_decode($_POST['user'], true);
 	$sum = 0;
 	foreach ($cart as $elem) {
 		$sum += $elem['price'];
+	}*/
+
+$order_elems = array();
+foreach ($cart as $elem) {
+	switch ($elem['class']) {
+		case 'house':
+			$house = new House($elem['data']['id'], true);
+			$house->set_dates($elem['date2'][0], $elem['date2'][1]);
+			$house->set_title($elem['full_title']);
+			array_push($order_elems, $house);
+			break;
+
+		case 'playpen':
+			$playpen = new Playpen($elem['choosen_id'], $elem['start_date'], $elem['time_type'], $elem['time_start'], $elem['time_end']);
+			$playpen->set_title($elem['title']);
+			array_push($order_elems, $playpen);
+			break;
+
+		case 'sheeps':
+			$sheeps = new Sheeps($elem['choosen_id'], $elem['start_date'], $elem['time_type'], $elem['time_start'], $elem['time_end'], $elem['choosen_trainer_id']);
+			$sheeps->set_title($elem['title']);
+			array_push($order_elems, $sheeps);
+			break;
+
+		case 'sheels':
+			$sheels = new Sheels($elem['choosen_id'], $elem['start_date'], $elem['time_type'], $elem['time_start'], $elem['time_end'], $elem['choosen_trainer_id']);
+			$sheels->set_title($elem['title']);
+			array_push($order_elems, $sheels);
+			break;
+		
+		case 'workout':
+			$workout = new Workout($elem['choosen_id'], $elem['start_date2'], $elem['time_type'], $elem['time_start'], $elem['time_end'], $elem['choosen_trainer_id']);
+			$workout->set_title($elem['title']);
+			$workout->set_service_id2($elem['choosen_id2']);
+			array_push($order_elems, $workout);
+			break;
+
+		default:
+			# code...
+			break;
 	}
+}
+$wholesaller = '0';
+$houses = array();
+foreach ($order_elems as $elem) {
+	if($elem instanceof House){
+		array_push($houses, $elem);
+	}
+}
+if(count($houses) >= 7){
+	$wholesaller = '1';
+}
+if($wholesaller == '1'){
+usort($houses, 'sortByClass');
 
 
+$houses = array_reverse($houses);
+$count_present = floor(count($houses) / 7);
+for ($i=0; $i < $count_present; $i++) { 
+	$houses[$i]->set_presents();
+}
+}
+$sum = 0;
+foreach ($order_elems as $elem) {
+	$sum += (Int) $elem->get_coast();
+}
 //создаю заказ
-	$order = "INSERT INTO `orders` (`id`, `client_id`, `coast`, `persons_count`, `date`) VALUES (NULL, '".$client_id."', '".$sum."', '".$user['person_count']."', CURRENT_DATE())";
-	echo $order;
+	$order = "INSERT INTO `orders` (`id`, `client_id`, `coast`, `persons_count`, `date`, `wholesaller`, `status`) VALUES (NULL, '".$client_id."', '".$sum."', '".$user['person_count']."', CURRENT_DATE(), '".$wholesaller."', '1')";
 	$db->query($order);
 	$last_id = 'SELECT MAX(`id`) FROM `orders`';
 	$last_id = $db->query($last_id);
 	$order_id = ( int ) mysqli_fetch_all($last_id, MYSQLI_ASSOC)[0]["MAX(`id`)"];
-
-//добавляю каждый сервис
-
-foreach ($cart as $elem) {
-	switch ($elem['class']) {
-		case 'house':
-			$house_sql = "INSERT INTO `house_to_orders` (`id`, `order_id`, `house_id`, `from_order`, `to_order`, `coast`, `sale`) VALUES (NULL, '".$order_id."', '".$elem['data']['id']."', '".$elem['date'][0]."', '".$elem['date'][1]."', '".$elem['price']."', '".$elem['sale']."')";
-			$db->query($house_sql);
-			break;
-
-		case 'playpen':
-			if($elem['time_type'] == '1'){
-				$date_start = $elem['start_date_2']." 00:00:00";
-				$date_end =  date("Y-m-d", strtotime("+1 days", strtotime($date_start)))." 00:00:00";
-				$playpen_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-			}else{
-				$date_start = $elem['start_date_2']." ".$elem['time_start'].":00:00";
-				$date_end = $elem['start_date_2']." ".$elem['time_end'].":00:00";
-				$playpen_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-			}
-			$db->query($playpen_sql);
-			break;
-
-		case 'sheeps':
-			if($elem['time_type'] == '1'){
-				$date_start =  $elem['start_date_2']." 00:00:00";
-				$date_end =  date("Y-m-d", strtotime("+7 days", strtotime($date_start)))." 00:00:00";
-				$sheeps_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-			}else{
-				$date_start =  $elem['start_date_2']." ".$elem['time_start'].":00:00";
-				$date_end =  $elem['start_date_2']." ".$elem['time_end'].":00:00";
-				$sheeps_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-			}
-			$db->query($sheeps_sql);
-			break;
-
-		case 'workout':
-			$date_start = $elem['start_date_2']." 00:00:00";
-			$date_end = $elem['start_date_2']." 23:59:59";
-			$workout_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', '".$elem['choosen_trainer_id']."', '".$elem['price']."')";
-			$db->query($workout_sql);
-			break;
-
-		case 'sheels':
-			$date_start = $elem['start_date_2']." 00:00:00";
-			$date_end = $elem['start_date_2']." 23:59:59";
-			$sheels_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '4', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-			$db->query($sheels_sql);
-			break;
-
-		case 'subscription':
-			foreach ($elem['items'] as $item) {
-				switch ($elem['class']) {
-					case 'playpen':
-						if($item['time_type'] == '1'){
-							$date_start = $item['start_date_2']." 00:00:00";
-							$date_end =  date("Y-m-d", strtotime("+1 days", strtotime($date_start)))." 00:00:00";
-							$playpen_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$item['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-						}else{
-							$date_start = $item['start_date_2']." ".$item['time_start'].":00:00";
-							$date_end = $item['start_date_2']." ".$item['time_end'].":00:00";
-							$playpen_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$item['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-						}
-						$db->query($playpen_sql);
-						break;
-
-					case 'sheeps':
-						if($elem['time_type'] == '1'){
-							$date_start =  $item['start_date_2']." 00:00:00";
-							$date_end =  date("Y-m-d", strtotime("+7 days", strtotime($date_start)))." 00:00:00";
-							$sheeps_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$item['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-						}else{
-							$date_start =  $item['start_date_2']." ".$item['time_start'].":00:00";
-							$date_end =  $item['start_date_2']." ".$item['time_end'].":00:00";
-							$sheeps_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$elem['choosen_id']."', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-						}
-						$db->query($sheeps_sql);
-						break;
-
-					case 'workout':
-						$date_start = $item['start_date_2']." 00:00:00";
-						$date_end = $item['start_date_2']." 23:59:59";
-						$workout_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '".$item['choosen_id']."', '".$date_start."', '".$date_end."', '".$item['choosen_trainer_id']."', '".$elem['price']."')";
-						$db->query($workout_sql);
-						break;
-
-					case 'sheels':
-						$date_start = $item['start_date_2']." 00:00:00";
-						$date_end = $item['start_date_2']." 23:59:59";
-						$sheels_sql = "INSERT INTO `services_to_order` (`id`, `order_id`, `service_id`, `date_from`, `date_to`, `trainer`, `coast`) VALUES (NULL, '".$order_id."', '4', '".$date_start."', '".$date_end."', NULL, '".$elem['price']."')";
-						$db->query($sheels_sql);
-						break;
-						}
-					}
-				break;
-
-		default:
-			break;
-	}
+$_SESSION['elems'] = array();
+foreach ($order_elems as $elem) {
+	array_push($_SESSION['elems'], $elem->to_book($order_id));
 }
+//добавляю каждый сервис
 
 //Запрос к сберу 
 
 $vars = array();
  
-$vars['userName'] = 'T490904206589-operator';
-$vars['password'] = 'T490904206589';
+$vars['userName'] = 'P490904206589-api';
+$vars['password'] = 'r$56apTnQ';
  
-/* ID заказа в магазине */
-$vars['orderNumber'] = $order_id;
+$vars['orderNumber'] = $order_id."-tt-".rand();
  
-/* Корзина для чека (необязательно) */
  $cart = array(
+);
+/*$counter = 1;
+foreach ($order_elems as $elem) {
+	array_push($cart, 
 	array(
-		'positionId' => 1,
-		'name' => 'Название товара',
+		'positionId' => (String)$counter,
+		'name' => $elem->full_title,
 		'quantity' => array(
 			'value' => 1,    
 			'measure' => 'шт'
 		),
-		'itemAmount' => 1 * (1000 * 100),
-		'itemCode' => '123456',
+		'itemAmount' => $elem->get_coast(),
+		'itemCode' => (String)$elem->get_unic_code(),
 		'tax' => array(
-			'taxType' => 0,
-			'taxSum' => 0
-		),
-		'itemPrice' => 1000 * 100,
+			'taxType' => 0		),
+		'itemPrice' => $elem->get_coast()
 	)
-);
- 
-$vars['orderBundle'] = json_encode(
+	);
+	$counter++;
+}*/
+/*$vars['orderBundle'] = json_encode(
 	array(
 		'cartItems' => array(
 			'items' => $cart
 		)
-	), 
-	JSON_UNESCAPED_UNICODE
-);
- 
-/* Сумма заказа в копейках */
+	)
+);*/
 $vars['amount'] = (Int)$sum * 100;
- 
-/* URL куда клиент вернется в случае успешной оплаты */
-$vars['returnUrl'] = PROTOCOL.'://'.DOMAIN.'/payment/success.php';
+ if($wholesaller == '1'){
+$vars['amount'] = 5000 * 100;
+
+}
+$vars['returnUrl'] = PROTOCOL.'://'.DOMAIN.'/success_pay.php';
 	
-/* URL куда клиент вернется в случае ошибки */
-$vars['failUrl'] = PROTOCOL.'://'.DOMAIN.'/payment/error.php';
+$vars['failUrl'] = PROTOCOL.'://'.DOMAIN.'/error.php';
  
-/* Описание заказа, не более 24 символов, запрещены % + \r \n */
 $vars['description'] = 'Заказ №' . $order_id ;
  
-$ch = curl_init('https://3dsec.sberbank.ru/payment/rest/registerPreAuth.do?' . http_build_query($vars));
+$ch = curl_init('https://securepayments.sberbank.ru/payment/rest/register.do?' . http_build_query($vars));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_HEADER, false);
@@ -203,13 +191,42 @@ $res = curl_exec($ch);
 curl_close($ch);
 $res = json_decode($res, JSON_OBJECT_AS_ARRAY);
 if (empty($res['orderId'])){
-	//echo $res['errorMessage'];						
+	echo $res['errorMessage'];
+	$sql = "DELETE FROM orders WHRER id = '".$order_id."'";
+	$db->query($sql);
+	$_SESSION['elems'] = array();						
 } else {
-	/* Успех: */
-	/* Тут нужно сохранить ID платежа в своей БД - $res['orderId'] */
- 
-	/* Перенаправление клиента на страницу оплаты */
-	//echo json_encode($res);
-}
 
+echo $res['formUrl'];
+}
+/*$userName = "T490904206589-operator"; 
+$password = "T490904206589";
+$orderNumber = $order_id;
+$amount = (Int)$sum * 100;
+$returnUrl = PROTOCOL.'://'.DOMAIN.'/payment/success.php';
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://3dsec.sberbank.ru/payment/rest/register.do');
+curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, 'amount='.$amount.'&currency=810&language=ru&orderNumber='.$orderNumber.'&returnUrl='.$returnUrl.'&jsonParams={"orderNumber":'.$orderNumber.'}&pageView=DESKTOP&expirationDate
+=2014-09-08T14:14:14&merchantLogin=merch_child');
+$out = curl_exec($curl);
+echo $out;
+curl_close($curl);*/
+/*use Voronkovich\SberbankAcquiring\Client;
+
+$client = new Client(['userName' => 'T490904206589-operator', 'password' => 'T490904206589']);
+$orderId     = $order_id;
+$orderAmount = (Int)$sum * 100;
+$returnUrl   = PROTOCOL.'://'.DOMAIN.'/payment/success.php';
+
+// You can pass additional parameters like a currency code and etc.
+$params['failUrl']  =  PROTOCOL.'://'.DOMAIN.'/payment/error.php';
+
+$result = $client->registerOrder($orderId, $orderAmount, $returnUrl, $params);
+
+$paymentOrderId = $result['orderId'];
+$paymentFormUrl = $result['formUrl'];
+
+var_dump($result);*/
 ?>

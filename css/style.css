@@ -2206,7 +2206,7 @@
   margin-top: 10px;
   padding-left: 10px;
   font-family: 'Roboto Slab', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 18px;
   font-weight: 300;
 }
@@ -2878,10 +2878,6 @@
   
   .modal-popup{
 	width:95% !important;
-  }
-  
-  .modal-body{
-      overflow-x: scroll;
   }
       
   .navbar {
@@ -4456,3 +4452,76 @@
     background-color:#CB759F;
     color:#fff;
 }
+
+@media screen and (min-width: 989px){
+  #take-offer{
+       position:fixed;
+       right:70px;
+       top:75px;
+       z-index:999;
+       width: 180px !important;
+       box-shadow: 0 0 10px 5px rgb(203, 117, 159, 0.5);
+  }  
+}
+
+
+@media screen and (max-width: 989px){
+   #take-offer{
+       position:fixed;
+       bottom:15px;
+       z-index:999;
+       width:75% !important;
+       box-shadow: 0 0 10px 5px rgb(203, 117, 159, 0.5);
+   } 
+}
+
+.close-popup-btn{
+    background-color: #389144 !important;
+    border: 1px solid #389144 !important;
+}
+
+.close-popup-btn:hover{
+    color: #389144 !important;
+    background-color: #fff !important;
+}
+
+.scheme-link a{
+    color:#fff;
+    text-decoration:none
+}
+
+.scheme-link:hover a{
+    color:#CB759F;
+}
+
+.attr-active{
+    background-color: #CB759F;
+}
+
+.attr-active span{
+    color:#fff;
+}
+
+#take-offer{
+    overflow:hidden;
+}
+
+#take-offer::before{
+    content:"";
+    position:absolute;
+    top:-15px;
+    left:0;
+    width:15px;
+    height:200%;
+    background-color:rgba(255,255,255, .3);
+    transform: rotate(30deg);
+    -webkit-animation: 2s linear 0s infinite alternate move_eye;
+     -moz-animation: 2s linear 0s infinite alternate move_eye;
+       -o-animation: 2s linear 0s infinite alternate move_eye;
+          animation: 2s linear 0s infinite alternate move_eye;
+}
+
+@-webkit-keyframes move_eye { from { margin-left:-100%; } to { margin-left:100%; }  }
+   @-moz-keyframes move_eye { from { margin-left:-100%; } to { margin-left:100%; }  }
+     @-o-keyframes move_eye { from { margin-left:-100%; } to { margin-left:100%; }  }
+        @keyframes move_eye { from { margin-left:-100%; } to { margin-left:100%; }  }

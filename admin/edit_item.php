@@ -16,7 +16,6 @@ if (isset($_POST['title'])) {
   $house->place_count = $_POST['place_count'];
   $house->class = $_POST['class'];
   $house->update();
-
 }
  ?>
 <div style="display: none" id="house_id"><?=$house->id?></div>
@@ -57,6 +56,10 @@ if (isset($_POST['title'])) {
                 <div class="form-group">
                   <label>Цена (РУБ)</label>
                   <input type="number" name="price" value="<?=$house->price?>" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Цена со скидкой (РУБ)</label>
+                  <input type="number" name="sale-price" class="form-control">
                 </div>
                 <div class="form-group">
                   <label>Количество мест</label>
@@ -188,7 +191,7 @@ if (isset($_POST['title'])) {
                   <textarea name="desc_seo" class="form-control" cols="30" rows="10"><?=$house->desc_seo?></textarea>
                 </div>
                 <div class="col-12 mb-3">
-                <button type="submit" class="btn btn-block btn-success btn-lg" name="add_button">Сохраниить</button>
+                <button type="submit" class="btn btn-block btn-success btn-lg" name="add_button">Сохранить</button>
                </div>
 
               </div>

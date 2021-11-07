@@ -44,7 +44,7 @@
 					<select ng-model="cart_elem.choosen_trainer_id" ng-change="cart_elem.check_full()" ng-class="cart_elem.choosen_id == '0' ? 'select-attention' : ''" class="form-control w-100" ng-options="trainer.id as trainer.fio for trainer in trainers">				
 					</select>
 				</div>
-				<div ng-if="cart_elem.trainers_rents.length != 0" class="col-12 mt-4">
+				<div ng-if="cart_elem.trainers_rent.length != 0" class="col-12 mt-4">
 					<label for="">Занятия у тренеров в этот день</label>
 				    <table class="table w-100" border="1">
 						<thead>
@@ -55,8 +55,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="trainer_rent in cart_elem.trainers_rents track by $index">
-								<td scope="row" class="text-center p-3">1{{trainer_rent.date_from.substr(0,11)}} </td>
+							<tr ng-repeat="trainer_rent in cart_elem.trainers_rent track by $index">
+								<td scope="row" class="text-center p-3">{{trainer_rent.date_from.substr(0,11)}} </td>
 								<td class="text-center p-3">{{trainer_rent.title}}</td>
 								<td class="text-center p-3">{{trainer_rent.fio}}</td>
 							</tr>
